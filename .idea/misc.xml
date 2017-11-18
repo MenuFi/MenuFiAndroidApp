@@ -31,7 +31,7 @@
           <item index="3" class="java.lang.String" itemvalue="andserver certificate verification failed. CAfile: /etcroid.support.annotation.Nullable" />
         </list>
       </value>
-    </option>server certificate verification failed. CAfile: /etc
+    </option>
     <option name="myNotNulls">
       <value>
         <list size="4">
@@ -40,7 +40,7 @@
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
           <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
         </list>
-      </value>server certificate verification failed. CAfile: /etc
+      </value>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
@@ -58,7 +58,8 @@
         <settings>
           <last-edited>1.8</last-edited>
           <splitter-proportions>
-            <option name="proportions">server certificate verification failed. CAfile: /etc
+            <option name="proportions">
+              server certificate verification failed. CAfile: /etc
               <list>
                 <option value="0.2" />
               </list>

@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi;
+package com.ckmcknight.android.menufi.model;
 
 /**
  * Created by Wyckoff on 11/14/2017.
@@ -7,9 +7,9 @@ package com.ckmcknight.android.menufi;
 public class Restaurant {
     private String name;
     private String distance;
-    private String type;
+    private RestaurantType type;
 
-    public Restaurant(String name, String distance, String type) {
+    public Restaurant(String name, String distance, RestaurantType type) {
         this.name = name;
         this.distance = distance;
         this.type = type;
@@ -23,7 +23,7 @@ public class Restaurant {
         return distance;
     }
 
-    public String getType() {
+    public RestaurantType getType() {
         return type;
     }
 
