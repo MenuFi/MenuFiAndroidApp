@@ -1,5 +1,7 @@
-package com.ckmcknight.android.menufi;
+package com.ckmcknight.android.menufi.controller;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,7 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toolbar;
+
+import com.ckmcknight.android.menufi.R;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -32,14 +35,35 @@ public class MainActivity extends AppCompatActivity {
         mNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
-                    case (R.id.nav_NearbyMenus):
-                        Intent nearbyMenu = new Intent(getApplicationContext(), NearbyMenuActivity.class);
-                        startActivity(nearbyMenu);
-                }
-                return true;
+                return selectFragment(item);
             }
         });
+    }
+
+    /** Swaps fragments in the main content view */
+    private boolean selectFragment(MenuItem menuItem) {
+        // Create a new fragment and specify the planet to show based on position
+        Fragment fragment;
+        switch(menuItem.getItemId()) {
+            case (R.id.nav_NearbyMenus):
+                fragment = new NearbyMenuFragment();
+                break;
+            case (R.id.nav_profile):
+                fragment = new ProfileFragment();
+                break;
+            default:
+                fragment = new Fragment();
+                break;
+        }
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentLocLayout, fragment)
+                .commit();
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        mDrawerLayout.closeDrawers();
+        return true;
     }
 
     @Override

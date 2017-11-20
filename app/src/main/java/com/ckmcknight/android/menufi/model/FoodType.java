@@ -3,7 +3,7 @@ package com.ckmcknight.android.menufi.model;
 /**
  * Enum representing the type of restaurants that we accommodate.
  */
-public enum RestaurantType {
+public enum FoodType {
     ITALIAN,
     GREEK,
     FAST_FOOD,
