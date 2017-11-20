@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface MenuDataRetriever {
 
-    List<Restaurant> getRestaurants();
+    List<Restaurant> getNearbyRestaurants(String location);
     List<MenuItem> getMenuItems(Restaurant restaurant);
 }
