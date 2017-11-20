@@ -2,6 +2,7 @@ package com.ckmcknight.android.menufi.model.datahandlers;
 
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -20,8 +21,23 @@ import java.util.List;
  */
 
 public class RemoteMenuDataRetriever implements MenuDataRetriever {
+    private NetworkController controller;
+    private static RemoteMenuDataRetriever dataRetriever;
+
+    private RemoteMenuDataRetriever(Context context) {
+        controller = NetworkController.getNetworkController(context);
+    }
+
+    public static synchronized RemoteMenuDataRetriever getRemoteMenuDataRetriever(Context c) {
+        if (dataRetriever == null) {
+            dataRetriever = new RemoteMenuDataRetriever(c);
+        }
+        return dataRetriever;
+    }
+
     @Override
     public List<Restaurant> getNearbyRestaurants(String location) {
+        return null;
     }
 
     @Override
@@ -29,7 +45,7 @@ public class RemoteMenuDataRetriever implements MenuDataRetriever {
         return null;
     }
 
-    private void makeJsonRequest(String url) {
+    private void makeJsonObjectRequest(String url) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -45,6 +61,6 @@ public class RemoteMenuDataRetriever implements MenuDataRetriever {
 
                     }
                 });
-
+        controller.addToRequestQueue(jsObjRequest);
     }
 }

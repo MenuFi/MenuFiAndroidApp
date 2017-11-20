@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 return selectFragment(item);
             }
         });
+        selectFragment(mNav.getMenu().getItem(0));
     }
 
     /** Swaps fragments in the main content view */

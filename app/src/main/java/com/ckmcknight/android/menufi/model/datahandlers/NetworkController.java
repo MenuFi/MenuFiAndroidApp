@@ -1,6 +1,5 @@
 package com.ckmcknight.android.menufi.model.datahandlers;
 
-import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -15,9 +14,8 @@ public class NetworkController {
 
     public static final String TAG = "NetworkController";
 
-    private RequestQueue mRequestQueue;
-
     private static NetworkController mInstance;
+    private RequestQueue mRequestQueue;
 
     private NetworkController(Context context) {
         mRequestQueue = Volley.newRequestQueue(context);
@@ -27,7 +25,7 @@ public class NetworkController {
         return mRequestQueue;
     }
 
-    public static NetworkController getNetworkController(Context context) {
+    public static synchronized NetworkController getNetworkController(Context context) {
         if (mInstance == null) {
             mInstance = new NetworkController(context);
         }
