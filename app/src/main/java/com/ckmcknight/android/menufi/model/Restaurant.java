@@ -7,9 +7,9 @@ package com.ckmcknight.android.menufi.model;
 public class Restaurant {
     private String name;
     private String distance;
-    private RestaurantType type;
+    private FoodType type;
 
-    public Restaurant(String name, String distance, RestaurantType type) {
+    public Restaurant(String name, String distance, FoodType type) {
         this.name = name;
         this.distance = distance;
         this.type = type;
@@ -23,7 +23,7 @@ public class Restaurant {
         return distance;
     }
 
-    public RestaurantType getType() {
+    public FoodType getType() {
         return type;
     }
 
