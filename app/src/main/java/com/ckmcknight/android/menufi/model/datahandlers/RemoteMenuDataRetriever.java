@@ -2,30 +2,26 @@ package com.ckmcknight.android.menufi.model.datahandlers;
 
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
+import java.util.Locale;
 
 /**
  * Created by charlie on 11/20/17.
  */
-
 public class RemoteMenuDataRetriever {
     private NetworkController controller;
     private static RemoteMenuDataRetriever dataRetriever;
+
+    private static final String BASE_URL = "http://128.61.105.97:8080";
+    private static final String NEARBY_RESTAURANT_QUERY_FORMAT = "/restaurants/nearby?location=%s";
+    private static final String MENU_ITEM_LIST_QUERY_FORMAT = "/items?restaurantId=%d";
 
     private RemoteMenuDataRetriever(Context context) {
         controller = NetworkController.getNetworkController(context);
@@ -38,7 +34,17 @@ public class RemoteMenuDataRetriever {
         return dataRetriever;
     }
 
-    public void makeJsonArrayRequest(String url, Response.Listener<JSONArray> listener) {
+    public void retrieveNearbyRestaurantList(Response.Listener<JSONArray> listener) {
+        String url = BASE_URL + String.format(Locale.US, NEARBY_RESTAURANT_QUERY_FORMAT, "here");
+        makeJsonArrayRequest(url, listener);
+    }
+
+    public void retrieveMenuItemsList(Response.Listener<JSONArray> listener, int restaurantId) {
+        String url = BASE_URL + String.format(Locale.US, MENU_ITEM_LIST_QUERY_FORMAT, restaurantId);
+        makeJsonArrayRequest(url, listener);
+    }
+
+    private void makeJsonArrayRequest(String url, Response.Listener<JSONArray> listener) {
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, listener, new Response.ErrorListener() {
 

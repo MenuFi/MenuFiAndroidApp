@@ -45,10 +45,8 @@ public class NearbyMenuFragment extends Fragment {
     }
 
     private void populateRestaurantList() {
-        String url = "http://128.61.105.97:8080/restaurants/nearby?location=here";
         RemoteMenuDataRetriever.getRemoteMenuDataRetriever(getActivity().getApplicationContext())
-                .makeJsonArrayRequest(url, new Response.Listener<JSONArray>(){
-
+                .retrieveNearbyRestaurantList(new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
                         mRestaurants.clear();
