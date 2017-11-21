@@ -9,15 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.Restaurant;
-import com.ckmcknight.android.menufi.model.FoodType;
+import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NearbyMenuFragment extends Fragment {
     private List<Restaurant> mRestaurants = new ArrayList<>();
+    private MyListAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,15 +38,24 @@ public class NearbyMenuFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        populateRestaurantList();
         ListView restaurantListView = getView().findViewById(R.id.restsListView);
-        MyListAdapter restaurantListAdapter = new MyListAdapter();
-        restaurantListView.setAdapter(restaurantListAdapter);
+        listAdapter = new MyListAdapter();
+        restaurantListView.setAdapter(listAdapter);
+        populateRestaurantList();
     }
 
     private void populateRestaurantList() {
-        mRestaurants.add(new Restaurant("Six Guys and Fries", "1.3", FoodType.AMERICAN));
-        mRestaurants.add(new Restaurant("Nick's Pies", "2.2", FoodType.DESSERT));
+        String url = "http://128.61.105.97:8080/restaurants/nearby?location=here";
+        RemoteMenuDataRetriever.getRemoteMenuDataRetriever(getActivity().getApplicationContext())
+                .makeJsonArrayRequest(url, new Response.Listener<JSONArray>(){
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        mRestaurants.clear();
+                        mRestaurants.addAll(Restaurant.restaurantListFrom(response));
+                        listAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private class MyListAdapter extends ArrayAdapter<Restaurant> {
@@ -65,7 +78,7 @@ public class NearbyMenuFragment extends Fragment {
             nameText.setText(thisRest.getName());
 
             TextView distanceText = (TextView)itemView.findViewById(R.id.restDistance);
-            distanceText.setText(thisRest.getDistance());
+            distanceText.setText(thisRest.getLocation());
 
             return itemView;
         }

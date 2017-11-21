@@ -1,26 +1,29 @@
 package com.ckmcknight.android.menufi.model.datahandlers;
 
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.ckmcknight.android.menufi.model.MenuItem;
-import com.ckmcknight.android.menufi.model.Restaurant;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * Created by charlie on 11/20/17.
  */
 
-public class RemoteMenuDataRetriever implements MenuDataRetriever {
+public class RemoteMenuDataRetriever {
     private NetworkController controller;
     private static RemoteMenuDataRetriever dataRetriever;
 
@@ -35,25 +38,9 @@ public class RemoteMenuDataRetriever implements MenuDataRetriever {
         return dataRetriever;
     }
 
-    @Override
-    public List<Restaurant> getNearbyRestaurants(String location) {
-        return null;
-    }
-
-    @Override
-    public List<MenuItem> getMenuItems(Restaurant restaurant) {
-        return null;
-    }
-
-    private void makeJsonObjectRequest(String url) {
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("JSON","Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
+    public void makeJsonArrayRequest(String url, Response.Listener<JSONArray> listener) {
+        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, listener, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
