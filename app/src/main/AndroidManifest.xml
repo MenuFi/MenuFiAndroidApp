@@ -18,12 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.NearbyMenuFragment"
-            android:label="@string/title_activity_nearby_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".controller.ProfileFragment"
-            android:label="@string/title_activity_profile"
+            android:name=".controller.MenuItemActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

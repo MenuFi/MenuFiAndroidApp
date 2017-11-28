@@ -1,16 +1,19 @@
 package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.model.MenuItem;
 import com.ckmcknight.android.menufi.model.Restaurant;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
 
@@ -42,6 +45,18 @@ public class NearbyMenuFragment extends Fragment {
         listAdapter = new MyListAdapter();
         restaurantListView.setAdapter(listAdapter);
         populateRestaurantList();
+
+        restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getActivity(), MenuItemActivity.class);
+                intent.putExtra("restID", Integer.toString(position));
+                getActivity().startActivity(intent);
+
+
+            }
+        });
     }
 
     private void populateRestaurantList() {

@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    >
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/itemDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/itemName"
+        android:layout_alignStart="@+id/itemName"
+        android:layout_below="@+id/itemName"
+        android:layout_marginTop="12dp"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/itemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/itemDescription"
+        android:layout_alignStart="@+id/itemDescription"
+        android:layout_below="@+id/itemDescription"
+        android:layout_marginTop="12dp"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/itemRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/itemPrice"
+        android:layout_alignStart="@+id/itemPrice"
+        android:layout_below="@+id/itemPrice"
+        android:layout_marginTop="12dp"
+        android:textSize="12sp"/>
+</RelativeLayout>
