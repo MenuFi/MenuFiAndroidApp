@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\Wyckoff\MenuFiTest\MenuFiAndroidApp\MenuFi.iml" filepath="C:\Users\Wyckoff\MenuFiTest\MenuFiAndroidApp\MenuFi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/MenuFiAndroidApp.iml" filepath="$PROJECT_DIR$/.idea/MenuFiAndroidApp.iml" />
-      <module fileurl="file://C:\Users\Wyckoff\MenuFiTest\MenuFiAndroidApp\MenuFiAndroidApp.iml" filepath="C:\Users\Wyckoff\MenuFiTest\MenuFiAndroidApp\MenuFiAndroidApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MenuFiAndroidApp.iml" filepath="$PROJECT_DIR$/MenuFiAndroidApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
     </modules>
