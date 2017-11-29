@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentLocLayout, fragment)
+                .addToBackStack(null)
                 .commit();
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());

@@ -3,6 +3,7 @@ package com.ckmcknight.android.menufi.controller;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,10 @@ public class MenuItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_item);
 
-        pos = Integer.parseInt(getIntent().getStringExtra("restID"));
+        pos = getIntent().getIntExtra("restID", -1);
+        Toolbar toolbar = findViewById(R.id.menu_item_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getIntent().getStringExtra("restName"));
 
         Log.d("pos", Integer.toString(pos));
 

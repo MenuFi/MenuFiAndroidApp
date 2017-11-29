@@ -36,6 +36,7 @@ public class NearbyMenuFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        populateRestaurantList();
     }
 
     @Override
@@ -45,13 +46,13 @@ public class NearbyMenuFragment extends Fragment {
         listAdapter = new MyListAdapter();
         restaurantListView.setAdapter(listAdapter);
         populateRestaurantList();
-
         restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), MenuItemActivity.class);
-                intent.putExtra("restID", Integer.toString(position));
+                intent.putExtra("restID", mRestaurants.get(position).getId());
+                intent.putExtra("restName", mRestaurants.get(position).getName());
                 getActivity().startActivity(intent);
 
 
