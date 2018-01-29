@@ -1,35 +1,30 @@
 package com.ckmcknight.android.menufi.controller;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.model.AccountManagement.AccountManager;
 
 public class LoginActivity extends AppCompatActivity {
+    private final static String INVALID_LOGIN_TEXT = "Invalid Username or Password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        EditText logEmail = (EditText) findViewById(R.id.logEmail);
-        EditText logPassword = (EditText) findViewById(R.id.logPassword);
-        Button loginButton = (Button) findViewById(R.id.LoginButton);
-        Button regButton = (Button) findViewById(R.id.regButton);
-
-        String strEmail = logEmail.getText().toString();
-        String strPassword = logPassword.getText().toString();
+        final EditText logEmail = findViewById(R.id.logEmail);
+        final EditText logPassword = findViewById(R.id.logPassword);
+        Button loginButton = findViewById(R.id.LoginButton);
+        Button regButton = findViewById(R.id.regButton);
+        final Context context = this.getApplicationContext();
 
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,10 +37,25 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent logIntent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(logIntent);
+                String email = logEmail.getText().toString();
+                String password = logPassword.getText().toString();
+                if (attemptLogin(email, password)){
+                    Intent logIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(logIntent);
+                }
             }
         });
+    }
+
+
+    private boolean attemptLogin(String email, String password) {
+        AccountManager manager = AccountManager.getAccountManager();
+        if (manager.login(email, password)) {
+            return true;
+        } else {
+            Toast.makeText(getApplicationContext(), INVALID_LOGIN_TEXT, Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
 }

@@ -11,7 +11,7 @@ public class AccountManager {
     private AccountValidator accountValidator;
     private SessionToken sessionToken;
 
-    private static AccountManager getAccountManager() {
+    public static AccountManager getAccountManager() {
         return accountManager;
     }
 
