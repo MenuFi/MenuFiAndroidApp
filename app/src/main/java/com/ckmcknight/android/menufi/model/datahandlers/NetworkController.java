@@ -7,29 +7,23 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-/**
- * Created by charlie on 11/20/17.
- */
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class NetworkController {
 
-    public static final String TAG = "NetworkController";
+    public static final String TAG = "NetworkComponent";
 
-    private static NetworkController mInstance;
     private RequestQueue mRequestQueue;
 
-    private NetworkController(Context context) {
+    @Inject
+    NetworkController(Context context) {
         mRequestQueue = Volley.newRequestQueue(context);
     }
 
     public RequestQueue getRequestQueue() {
         return mRequestQueue;
-    }
-
-    public static synchronized NetworkController getNetworkController(Context context) {
-        if (mInstance == null) {
-            mInstance = new NetworkController(context);
-        }
-        return mInstance;
     }
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {

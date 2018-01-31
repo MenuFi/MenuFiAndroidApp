@@ -2,20 +2,23 @@ package com.ckmcknight.android.menufi.model.AccountManagement;
 
 import android.support.annotation.Nullable;
 
+import com.ckmcknight.android.menufi.model.datahandlers.NetworkController;
+
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+
+@Singleton
 public class AccountManager {
-    private static AccountManager accountManager = new AccountManager();
     private static Logger logger = Logger.getLogger("AccountManager");
 
     private AccountValidator accountValidator;
     private SessionToken sessionToken;
 
-    public static AccountManager getAccountManager() {
-        return accountManager;
-    }
-
-    private AccountManager() {
+    @Inject
+    public AccountManager() {
         accountValidator = MockAccountValidator.getAccountValidator();
     }
 

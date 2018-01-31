@@ -12,9 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.MenuItem;
-import com.ckmcknight.android.menufi.model.Restaurant;
+import com.ckmcknight.android.menufi.model.DataContainers.Restaurant;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
 
 import org.json.JSONArray;
@@ -25,6 +25,7 @@ import java.util.List;
 public class NearbyMenuFragment extends Fragment {
     private List<Restaurant> mRestaurants = new ArrayList<>();
     private MyListAdapter listAdapter;
+    private RemoteMenuDataRetriever menuDataRetriever;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +43,8 @@ public class NearbyMenuFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        menuDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getNetworkComponent().dataRetriever();
+
         ListView restaurantListView = getView().findViewById(R.id.restsListView);
         listAdapter = new MyListAdapter();
         restaurantListView.setAdapter(listAdapter);
@@ -61,8 +64,7 @@ public class NearbyMenuFragment extends Fragment {
     }
 
     private void populateRestaurantList() {
-        RemoteMenuDataRetriever.getRemoteMenuDataRetriever(getActivity().getApplicationContext())
-                .retrieveNearbyRestaurantList(new Response.Listener<JSONArray>(){
+                menuDataRetriever.retrieveNearbyRestaurantList(new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
                         mRestaurants.clear();

@@ -1,22 +1,19 @@
 package com.ckmcknight.android.menufi.controller;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.MenuItem;
-import com.ckmcknight.android.menufi.model.Restaurant;
+import com.ckmcknight.android.menufi.model.DataContainers.MenuItem;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
 
 import org.json.JSONArray;
@@ -32,11 +29,13 @@ public class MenuItemActivity extends AppCompatActivity {
     private List<MenuItem> menuItemsList = new ArrayList<>();
     private MyListAdapter listAdapter;
     private int pos;
+    private RemoteMenuDataRetriever menuDataRetriever;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_item);
+        menuDataRetriever = ((MenuFiApplication) getApplication()).getNetworkComponent().dataRetriever();
 
         pos = getIntent().getIntExtra("restID", -1);
         Toolbar toolbar = findViewById(R.id.menu_item_toolbar);
@@ -67,8 +66,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
     
     private void populateMenuItemList() {
-        RemoteMenuDataRetriever.getRemoteMenuDataRetriever(getApplicationContext())
-                .retrieveMenuItemsList(new Response.Listener<JSONArray>(){
+                menuDataRetriever.retrieveMenuItemsList(new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
                         menuItemsList.clear();

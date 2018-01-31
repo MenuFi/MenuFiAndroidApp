@@ -11,20 +11,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.AccountManagement.AccountManager;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RegisterActivity extends AppCompatActivity {
     private static String INVALID_REGISTER_TEXT = "Invalid Username or Password";
+
+    @BindView(R.id.regEmail) EditText regEmail;
+    @BindView(R.id.regPassword) EditText regPassword;
+    @BindView(R.id.registerButton) Button registerButton;
+
+    AccountManager accountManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
+        accountManager = ((MenuFiApplication) getApplication()).getAccountComponent().accountManager();
 
-        final EditText regEmail = findViewById(R.id.regEmail);
-        final EditText regPassword = findViewById(R.id.regPassword);
-        Button registerButton = findViewById(R.id.registerButton);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,8 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private boolean attemptRegister(String email, String password) {
-        AccountManager manager = AccountManager.getAccountManager();
-        if (manager.register(email, password)) {
+        if (accountManager.register(email, password)) {
             return true;
         } else {
             Toast.makeText(getApplicationContext(), INVALID_REGISTER_TEXT, Toast.LENGTH_SHORT).show();

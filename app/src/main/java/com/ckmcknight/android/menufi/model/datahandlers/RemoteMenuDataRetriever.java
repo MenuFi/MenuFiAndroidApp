@@ -12,6 +12,8 @@ import org.json.JSONArray;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 /**
  * Created by charlie on 11/20/17.
  */
@@ -23,15 +25,9 @@ public class RemoteMenuDataRetriever {
     private static final String NEARBY_RESTAURANT_QUERY_FORMAT = "/restaurants/nearby?location=%s";
     private static final String MENU_ITEM_LIST_QUERY_FORMAT = "/items?restaurantId=%d";
 
-    private RemoteMenuDataRetriever(Context context) {
-        controller = NetworkController.getNetworkController(context);
-    }
-
-    public static synchronized RemoteMenuDataRetriever getRemoteMenuDataRetriever(Context c) {
-        if (dataRetriever == null) {
-            dataRetriever = new RemoteMenuDataRetriever(c);
-        }
-        return dataRetriever;
+    @Inject
+    RemoteMenuDataRetriever(NetworkController controller) {
+        this.controller = controller;
     }
 
     public void retrieveNearbyRestaurantList(Response.Listener<JSONArray> listener) {
