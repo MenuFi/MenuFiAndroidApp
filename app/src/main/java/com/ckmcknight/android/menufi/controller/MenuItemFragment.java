@@ -1,11 +1,19 @@
 package com.ckmcknight.android.menufi.controller;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +29,8 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * Created by Wyckoff on 11/21/2017.
  */
@@ -33,38 +43,15 @@ public class MenuItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mockPopulateMenuItemList();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_item);
-        menuDataRetriever = ((MenuFiApplication) getApplication()).getNetworkComponent().dataRetriever();
 
-        pos = getIntent().getIntExtra("restID", -1);
-        Toolbar toolbar = findViewById(R.id.menu_item_toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getIntent().getStringExtra("restName"));
-
-        Log.d("pos", Integer.toString(pos));
-
-        ListView menuItemList = findViewById(R.id.menuItemListView);
+        ListView itemListView = findViewById(R.id.menuItemListView);
         listAdapter = new MyListAdapter();
-        menuItemList.setAdapter(listAdapter);
-        populateMenuItemList();
-    }
-    /*
-    @Override
-    public void onResume() {
-        super.onResume();
+        itemListView.setAdapter(listAdapter);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        ListView menuItemList = getView().findViewById(R.id.menuItemListView);
-        listAdapter = new MyListAdapter();
-        menuItemList.setAdapter(listAdapter);
-    }
-    */
-
-    
     private void populateMenuItemList() {
                 menuDataRetriever.retrieveMenuItemsList(new Response.Listener<JSONArray>(){
                     @Override
@@ -76,6 +63,16 @@ public class MenuItemActivity extends AppCompatActivity {
                 },pos);
     }
 
+    private void mockPopulateMenuItemList() {
+        MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f);
+        MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f);
+        MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f);
+        menuItemsList.clear();
+        menuItemsList.add(burger);
+        menuItemsList.add(bbqBurger);
+        menuItemsList.add(fries);
+    }
+
 
     private class MyListAdapter extends ArrayAdapter<MenuItem> {
         MyListAdapter() { super(MenuItemActivity.this, R.layout.item_row, menuItemsList); }
@@ -85,6 +82,7 @@ public class MenuItemActivity extends AppCompatActivity {
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.item_row, parent, false);
+
             }
 
             MenuItem thisItem = menuItemsList.get(position);
@@ -96,7 +94,7 @@ public class MenuItemActivity extends AppCompatActivity {
             descText.setText(thisItem.getDescription());
 
             TextView priceText = itemView.findViewById(R.id.itemPrice);
-            priceText.setText(String.valueOf(thisItem.getPrice()));
+            priceText.setText("$" + String.valueOf(thisItem.getPrice()));
 
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
             ratingsText.setText(String.valueOf(thisItem.getRatings()));
