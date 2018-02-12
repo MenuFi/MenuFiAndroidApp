@@ -43,7 +43,7 @@ public class NearbyMenuFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        menuDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getNetworkComponent().dataRetriever();
+        menuDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
 
         ListView restaurantListView = getView().findViewById(R.id.restsListView);
         listAdapter = new MyListAdapter();
