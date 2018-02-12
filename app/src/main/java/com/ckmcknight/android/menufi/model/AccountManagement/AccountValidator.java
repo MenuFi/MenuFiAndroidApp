@@ -1,8 +1,12 @@
 package com.ckmcknight.android.menufi.model.AccountManagement;
 
-interface AccountValidator {
+import com.android.volley.Response;
 
-    SessionToken login(String email, String password) throws InvalidCredentialsException;
-    SessionToken register(String email, String password);
+import org.json.JSONArray;
+
+public interface AccountValidator {
+
+    void login(Response.Listener<JSONArray> listener, String email, String password);
+    void register(Response.Listener<JSONArray> listener, String email, String password);
 
 }

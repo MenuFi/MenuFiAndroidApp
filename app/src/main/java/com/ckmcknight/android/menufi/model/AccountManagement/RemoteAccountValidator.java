@@ -1,26 +1,40 @@
 package com.ckmcknight.android.menufi.model.AccountManagement;
 
-import android.content.Context;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.ckmcknight.android.menufi.model.datahandlers.NetworkController;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import org.json.JSONArray;
+
+import java.util.logging.Logger;
+
+import javax.inject.Inject;
 
 public class RemoteAccountValidator implements AccountValidator {
 
-    private RequestQueue requestQueue;
+    private NetworkController networkController;
+    private Logger logger = Logger.getLogger("RemoteAccountValidator");
+    private static String loginExtension = "/patron/loginToken/";
+    private static String registrationExtension = "/patron/registration/";
 
-    public RemoteAccountValidator(Context context) {
-        requestQueue = Volley.newRequestQueue(context);
-
+    @Inject
+    public RemoteAccountValidator(NetworkController networkController) {
+        this.networkController = networkController;
     }
 
     @Override
-    public SessionToken login(String email, String password) throws InvalidCredentialsException {
-        return null;
+    public void login(Response.Listener<JSONArray> listener, String email, String password) {
+        String url = NetworkController.BASE_SERVER_URL + loginExtension;
+        JsonArrayRequest loginRequest = new JsonArrayRequest(url, listener, null);
+        networkController.addToRequestQueue(loginRequest);
     }
 
     @Override
-    public SessionToken register(String email, String password) {
-        return null;
+    public void register(Response.Listener<JSONArray> listener, String email, String password) {
+        String url = NetworkController.BASE_SERVER_URL + registrationExtension;
+        JsonArrayRequest loginRequest = new JsonArrayRequest(url, listener, null);
+        networkController.addToRequestQueue(loginRequest);
     }
 }

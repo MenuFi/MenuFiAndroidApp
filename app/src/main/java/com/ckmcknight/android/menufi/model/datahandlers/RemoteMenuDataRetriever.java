@@ -14,9 +14,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-/**
- * Created by charlie on 11/20/17.
- */
 public class RemoteMenuDataRetriever {
     private NetworkController controller;
     private static RemoteMenuDataRetriever dataRetriever;

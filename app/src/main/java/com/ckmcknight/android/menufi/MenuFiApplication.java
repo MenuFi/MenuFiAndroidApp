@@ -2,28 +2,22 @@ package com.ckmcknight.android.menufi;
 
 import android.app.Application;
 
-import com.ckmcknight.android.menufi.components.AccountComponent;
-import com.ckmcknight.android.menufi.components.DaggerAccountComponent;
-import com.ckmcknight.android.menufi.components.DaggerNetworkComponent;
-import com.ckmcknight.android.menufi.components.NetworkComponent;
+import com.ckmcknight.android.menufi.dagger.components.MenuFiComponent;
+import com.ckmcknight.android.menufi.dagger.modules.ApplicationModule;
+import com.ckmcknight.android.menufi.dagger.components.DaggerMenuFiComponent;
 
 public class MenuFiApplication extends Application {
-    AccountComponent accountComponent;
-    NetworkComponent networkComponent;
+    MenuFiComponent menuFiComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        accountComponent = DaggerAccountComponent.create();
-        networkComponent = DaggerNetworkComponent.builder().applicationModule(new ApplicationModule(this)).build();
+        ApplicationModule applicationModule = new ApplicationModule(this);
+        menuFiComponent = DaggerMenuFiComponent.builder().applicationModule(applicationModule).build();
     }
 
-    public AccountComponent getAccountComponent() {
-        return accountComponent;
-    }
-
-    public NetworkComponent getNetworkComponent() {
-        return networkComponent;
+    public MenuFiComponent getMenuFiComponent() {
+        return menuFiComponent;
     }
 
 }

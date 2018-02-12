@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi;
+package com.ckmcknight.android.menufi.dagger.modules;
 
 import android.app.Application;
 import android.content.Context;

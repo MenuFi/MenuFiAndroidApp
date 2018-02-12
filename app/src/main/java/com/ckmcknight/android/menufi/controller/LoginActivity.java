@@ -11,9 +11,7 @@ import android.widget.Toast;
 
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.AccountManagement.AccountManager;
-
-import javax.inject.Inject;
+import com.ckmcknight.android.menufi.model.AccountManagement.AccountService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.LoginButton) Button loginButton;
     @BindView(R.id.regButton) Button regButton;
 
-    AccountManager accountManager;
+    AccountService accountService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         final Context context = this.getApplicationContext();
-
-        accountManager = ((MenuFiApplication) getApplication()).getAccountComponent().accountManager();
 
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,14 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     private boolean attemptLogin(String email, String password) {
-        if (accountManager.login(email, password)) {
-            return true;
-        } else {
-            Toast.makeText(getApplicationContext(), INVALID_LOGIN_TEXT, Toast.LENGTH_SHORT).show();
-            return false;
-        }
+        Intent loginIntent = new Intent(this, AccountService.class);
+        loginIntent.putExtra(AccountService.EMAIL_EXTRA, email);
+        loginIntent.putExtra(AccountService.PASSWORD_EXTRA, password);
+        startService(loginIntent);
+        return true;
     }
 
 }

@@ -1,29 +1,47 @@
 package com.ckmcknight.android.menufi.model.AccountManagement;
 
+import com.android.volley.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
-class MockAccountValidator implements AccountValidator {
-    private static final MockAccountValidator accountValidator = new MockAccountValidator();
+import javax.inject.Singleton;
+
+@Singleton
+public class MockAccountValidator implements AccountValidator {
     private Map<String, String> accounts = new HashMap<>();
-
-    private MockAccountValidator() {}
-
-    public static AccountValidator getAccountValidator() {
-        return accountValidator;
-    }
+    private static final String JSON_VALID_LOGIN_RESPONSE_FORMAT = "";
+    private static final String JSON_INVALID_LOGIN_RESPONSE_FORMAT = "";
+    private static final String JSON_REGISTER_RESPONSE_FORMAT = "";
 
     @Override
-    public SessionToken login(String email, String password) throws InvalidCredentialsException {
+    public void login(Response.Listener<JSONArray> listener, String email, String password) {
         if (accounts.containsKey(email) && accounts.get(email).equals(password)) {
-            return new SessionToken("validtoken");
+            try {
+                listener.onResponse(new JSONArray(JSON_VALID_LOGIN_RESPONSE_FORMAT));
+            } catch (JSONException e) {
+                Logger.getAnonymousLogger("exception while trying to trigger fake login response in mock Account validator");
+            }
+        } else {
+            try {
+                listener.onResponse(new JSONArray(JSON_INVALID_LOGIN_RESPONSE_FORMAT));
+            } catch (JSONException e) {
+                Logger.getAnonymousLogger("exception while trying to trigger fake login response in mock Account validator");
+            }
         }
-        throw new InvalidCredentialsException();
     }
 
     @Override
-    public SessionToken register(String email, String password) {
+    public void register(Response.Listener<JSONArray> listener, String email, String password) {
         accounts.put(email, password);
-        return new SessionToken("validtoken");
+        try {
+            listener.onResponse(new JSONArray(JSON_REGISTER_RESPONSE_FORMAT));
+        } catch (JSONException e) {
+            Logger.getAnonymousLogger("exception while trying to trigger fake register response in mock Account validator");
+        }
     }
 }
