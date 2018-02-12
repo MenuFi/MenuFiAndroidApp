@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.ckmcknight.android.menufi.controller.MenuItemDetailActivity"
-    tools:showIn="@layout/activity_menu_item_detail">
+    tools:context="com.ckmcknight.android.menufi.controller.MenuItemDetailFragment"
+    tools:showIn="@layout/fragment_menu_item_detail">
 
 </android.support.constraint.ConstraintLayout>

@@ -7,7 +7,10 @@ class MockAccountValidator implements AccountValidator {
     private static final MockAccountValidator accountValidator = new MockAccountValidator();
     private Map<String, String> accounts = new HashMap<>();
 
-    private MockAccountValidator() {}
+
+    private MockAccountValidator() {
+        accounts.put("a", "a");
+    }
 
     public static AccountValidator getAccountValidator() {
         return accountValidator;

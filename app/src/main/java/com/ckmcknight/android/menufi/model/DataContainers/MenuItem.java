@@ -20,6 +20,7 @@ public class MenuItem {
     private String description;
     private float price;
     private float ratings;
+    private int calories;
 
 
     public MenuItem(String name, String description, float price, float ratings) {
@@ -27,6 +28,7 @@ public class MenuItem {
         this.description = description;
         this.price = price;
         this.ratings = ratings;
+        int calories;
     }
 
     public String getName() {
@@ -45,12 +47,19 @@ public class MenuItem {
         return ratings;
     }
 
+    public int getCalories() { return calories; }
+
+    public void setCalories(int cal) { calories = cal; }
+
     public static MenuItem from(JSONObject jsonObject) {
         try {
             String name = jsonObject.getString("name");
             String description =jsonObject.getString("description");
             float price = (float)(jsonObject.getDouble("price"));
             float rating = (float)(jsonObject.getDouble("rating"));
+            int calories = (int) (jsonObject.getInt("calories"));
+
+
 
             return new MenuItem(name, description,price,rating);
         } catch(JSONException e) {
@@ -71,5 +80,7 @@ public class MenuItem {
         }
         return null;
     }
+
+
 }
 

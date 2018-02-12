@@ -2,15 +2,8 @@ package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.DataContainers.MenuItem;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
@@ -29,27 +21,26 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Created by Wyckoff on 11/21/2017.
  */
 
-public class MenuItemActivity extends AppCompatActivity {
+public class MenuItemFragment extends Fragment {
     private List<MenuItem> menuItemsList = new ArrayList<>();
     private MyListAdapter listAdapter;
     private int pos;
     private RemoteMenuDataRetriever menuDataRetriever;
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        Bundle bundle = this.getArguments();
+        getActivity().setTitle(bundle.getString("name"));
+        return inflater.inflate(R.layout.fragment_menu_item, container, false);
+    }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        mockPopulateMenuItemList();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_item);
-
-        ListView itemListView = findViewById(R.id.menuItemListView);
-        listAdapter = new MyListAdapter();
-        itemListView.setAdapter(listAdapter);
+    public void onResume() {
+        super.onResume();
     }
 
     private void populateMenuItemList() {
@@ -63,8 +54,36 @@ public class MenuItemActivity extends AppCompatActivity {
                 },pos);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mockPopulateMenuItemList();
+
+        ListView itemListView = getView().findViewById(R.id.menuItemListView);
+        listAdapter = new MyListAdapter();
+        itemListView.setAdapter(listAdapter);
+
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Fragment fragment = new MenuItemDetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("name", menuItemsList.get(position).getName());
+                bundle.putInt("cal", menuItemsList.get(position).getCalories());
+                fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentLocLayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+       // menuItemsList.clear();
+    }
+
     private void mockPopulateMenuItemList() {
         MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f);
+        burger.setCalories(350);
         MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f);
         MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f);
         menuItemsList.clear();
@@ -75,7 +94,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
 
     private class MyListAdapter extends ArrayAdapter<MenuItem> {
-        MyListAdapter() { super(MenuItemActivity.this, R.layout.item_row, menuItemsList); }
+        MyListAdapter() { super(getActivity(), R.layout.item_row, menuItemsList); }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
