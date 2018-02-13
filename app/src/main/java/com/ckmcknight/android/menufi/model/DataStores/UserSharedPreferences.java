@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.AccountManagement;
+package com.ckmcknight.android.menufi.model.DataStores;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,6 +1,9 @@
 package com.ckmcknight.android.menufi.controller;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -35,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
                 startRegistration(email, password);
             }
         });
+
+        registerReceiver(new RegisterBroadcastReceiver(), new IntentFilter(AccountService.BROADCAST_REGISTERED));
     }
 
     private void startRegistration(String email, String password) {
@@ -45,14 +50,26 @@ public class RegisterActivity extends AppCompatActivity {
         startService(registerIntent);
     }
 
-    private boolean attemptRegister(String email, String password) {
+    private void registerFailed() {
         Toast.makeText(getApplicationContext(), INVALID_REGISTER_TEXT, Toast.LENGTH_SHORT).show();
-        return false;
     }
 
     private void registerSuccessful() {
         Intent regIntent = new Intent(RegisterActivity.this, LoginActivity.class);
         RegisterActivity.this.startActivity(regIntent);
+    }
+
+    private class RegisterBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean successful = intent.getBooleanExtra(AccountService.BROADCAST_STATUS, false);
+            if (successful) {
+                registerSuccessful();
+            } else {
+                registerFailed();
+            }
+        }
     }
 
 }
