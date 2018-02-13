@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.DataContainers;
+package com.ckmcknight.android.menufi.model.containers;
 
 public class SessionToken {
     private String tokenValue;

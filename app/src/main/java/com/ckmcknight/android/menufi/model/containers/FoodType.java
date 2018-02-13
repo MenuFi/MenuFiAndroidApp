@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.DataContainers;
+package com.ckmcknight.android.menufi.model.containers;
 
 /**
  * Enum representing the type of restaurants that we accommodate.

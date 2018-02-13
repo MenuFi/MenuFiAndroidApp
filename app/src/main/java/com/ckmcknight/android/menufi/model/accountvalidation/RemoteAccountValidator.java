@@ -1,8 +1,9 @@
-package com.ckmcknight.android.menufi.model.AccountManagement;
+package com.ckmcknight.android.menufi.model.accountvalidation;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ckmcknight.android.menufi.model.datahandlers.NetworkController;
+import com.ckmcknight.android.menufi.model.datahandlers.RemoteUrls;
 
 import org.json.JSONObject;
 
@@ -16,8 +17,6 @@ public class RemoteAccountValidator implements AccountValidator {
 
     private NetworkController networkController;
     private Logger logger = Logger.getLogger("RemoteAccountValidator");
-    private static String loginExtension = "/patron/loginToken/";
-    private static String registrationExtension = "/patron/registration/";
 
     @Inject
     public RemoteAccountValidator(NetworkController networkController) {
@@ -26,7 +25,7 @@ public class RemoteAccountValidator implements AccountValidator {
 
     @Override
     public void login(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, String email, String password) {
-        String url = NetworkController.BASE_SERVER_URL + loginExtension;
+        String url = RemoteUrls.BASE_SERVER_URL + RemoteUrls.LOGIN_EXT;
         JSONObject request = new JSONObject(getRequestMap(email, password));
         JsonObjectRequest loginRequest = new JsonObjectRequest(url, request, listener, errorListener);
         networkController.addToRequestQueue(loginRequest);
@@ -34,7 +33,7 @@ public class RemoteAccountValidator implements AccountValidator {
 
     @Override
     public void register(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, String email, String password) {
-        String url = NetworkController.BASE_SERVER_URL + registrationExtension;
+        String url = RemoteUrls.BASE_SERVER_URL + RemoteUrls.REGISTRATION_EXT;
         JSONObject request = new JSONObject(getRequestMap(email, password));
         JsonObjectRequest loginRequest = new JsonObjectRequest(url, request, listener, errorListener);
         networkController.addToRequestQueue(loginRequest);

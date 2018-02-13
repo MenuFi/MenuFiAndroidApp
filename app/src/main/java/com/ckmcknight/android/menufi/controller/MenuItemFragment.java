@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.DataContainers.MenuItem;
+import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
 
 import org.json.JSONArray;

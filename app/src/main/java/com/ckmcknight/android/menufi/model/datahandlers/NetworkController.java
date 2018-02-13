@@ -14,7 +14,6 @@ import javax.inject.Singleton;
 public class NetworkController {
 
     public static final String TAG = "MenuFiComponent";
-    public static final String BASE_SERVER_URL = "https://menufi-192821.appspot.com";
 
     private RequestQueue mRequestQueue;
 

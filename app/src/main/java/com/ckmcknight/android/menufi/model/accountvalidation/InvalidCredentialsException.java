@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.AccountManagement;
+package com.ckmcknight.android.menufi.model.accountvalidation;
 
 public class InvalidCredentialsException extends Exception {
 

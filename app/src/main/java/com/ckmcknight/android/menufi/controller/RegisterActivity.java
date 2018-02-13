@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.AccountManagement.AccountService;
+import com.ckmcknight.android.menufi.model.accountvalidation.AccountService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

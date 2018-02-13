@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.AccountManagement;
+package com.ckmcknight.android.menufi.model.accountvalidation;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.dagger.components.MenuFiComponent;
-import com.ckmcknight.android.menufi.model.DataContainers.SessionToken;
-import com.ckmcknight.android.menufi.model.DataStores.UserSharedPreferences;
+import com.ckmcknight.android.menufi.model.containers.SessionToken;
+import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;

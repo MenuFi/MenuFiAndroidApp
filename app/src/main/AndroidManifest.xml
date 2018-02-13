@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".model.AccountManagement.AccountService"/>
+        <service android:name=".model.accountvalidation.AccountService"/>
         <activity android:name=".controller.MainActivity"/>
         <activity
             android:name=".controller.RegisterActivity"

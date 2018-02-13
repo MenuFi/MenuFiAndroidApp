@@ -5,16 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.DataContainers.MenuItem;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MenuItemDetailFragment extends Fragment {
 

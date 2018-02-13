@@ -2,7 +2,6 @@ package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,8 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.DataContainers.FoodType;
-import com.ckmcknight.android.menufi.model.DataContainers.Restaurant;
+import com.ckmcknight.android.menufi.model.containers.FoodType;
+import com.ckmcknight.android.menufi.model.containers.Restaurant;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
 
 import org.json.JSONArray;

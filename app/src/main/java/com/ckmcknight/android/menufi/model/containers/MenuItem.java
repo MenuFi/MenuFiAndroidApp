@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.DataContainers;
+package com.ckmcknight.android.menufi.model.containers;
 
 import android.util.Log;
 

@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.AccountManagement;
+package com.ckmcknight.android.menufi.model.accountvalidation;
 
 import com.android.volley.Response;
 

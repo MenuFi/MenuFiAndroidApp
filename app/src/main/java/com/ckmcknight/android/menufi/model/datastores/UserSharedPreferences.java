@@ -1,10 +1,10 @@
-package com.ckmcknight.android.menufi.model.DataStores;
+package com.ckmcknight.android.menufi.model.datastores;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.WorkerThread;
 
-import com.ckmcknight.android.menufi.model.DataContainers.SessionToken;
+import com.ckmcknight.android.menufi.model.containers.SessionToken;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
