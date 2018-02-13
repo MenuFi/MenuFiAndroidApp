@@ -18,6 +18,15 @@ public class MockAccountValidator implements AccountValidator {
     private static final String JSON_INVALID_LOGIN_RESPONSE_FORMAT = "";
     private static final String JSON_REGISTER_RESPONSE_FORMAT = "";
 
+
+    private MockAccountValidator() {
+        accounts.put("a", "a");
+    }
+
+    public static AccountValidator getAccountValidator() {
+        return accountValidator;
+    }
+
     @Override
     public void login(Response.Listener<JSONArray> listener, String email, String password) {
         if (accounts.containsKey(email) && accounts.get(email).equals(password)) {

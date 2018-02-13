@@ -1,38 +1,48 @@
 package com.ckmcknight.android.menufi.controller;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.DataContainers.MenuItem;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MenuItemDetailFragment extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_item_detail);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_menu_item_detail, container, false);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View itemView = convertView;
-        if (itemView == null) {
-            itemView = getLayoutInflater().inflate(R.layout.activity_menu_item_detail, parent, false);
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-        }
+    @Override
+    public void onStart() {
 
-        TextView foodText = itemView.findViewById(R.id.foodName);
+        super.onStart();
 
-        TextView descText = itemView.findViewById(R.id.itemDescription);
+        TextView text1 = getView().findViewById(R.id.foodName);
+        TextView text2 = getView().findViewById(R.id.foodCalories);
+        Bundle bundle = this.getArguments();
 
-        TextView calorieText = itemView.findViewById(R.id.itemPrice);
-
-        return itemView;
+        text1.setText(bundle.getString("name"));
+        text2.setText("Calories: " + Integer.toString(bundle.getInt("cal")));
     }
 }
+
+
+

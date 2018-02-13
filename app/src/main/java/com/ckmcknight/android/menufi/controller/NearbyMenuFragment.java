@@ -1,6 +1,7 @@
 package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.model.DataContainers.FoodType;
 import com.ckmcknight.android.menufi.model.DataContainers.Restaurant;
 import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
 
@@ -34,10 +36,12 @@ public class NearbyMenuFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_nearby_menu, container, false);
     }
 
+
+
     @Override
     public void onResume() {
         super.onResume();
-        populateRestaurantList();
+        mockPopulateRestaurantList();
     }
 
     @Override
@@ -45,22 +49,24 @@ public class NearbyMenuFragment extends Fragment {
         super.onStart();
         menuDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
 
-        ListView restaurantListView = getView().findViewById(R.id.restsListView);
+        final ListView restaurantListView = getView().findViewById(R.id.restsListView);
         listAdapter = new MyListAdapter();
         restaurantListView.setAdapter(listAdapter);
-        populateRestaurantList();
         restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(getActivity(), MenuItemActivity.class);
-                intent.putExtra("restID", mRestaurants.get(position).getId());
-                intent.putExtra("restName", mRestaurants.get(position).getName());
-                getActivity().startActivity(intent);
-
-
+                Fragment fragment = new MenuItemFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("name", mRestaurants.get(position).getName());
+                fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentLocLayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
+        mRestaurants.clear();
     }
 
     private void populateRestaurantList() {
@@ -72,6 +78,14 @@ public class NearbyMenuFragment extends Fragment {
                         listAdapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    //create mock restaurants and menu items in order to show view items
+    private void mockPopulateRestaurantList() {
+        Restaurant fiveGuys = new Restaurant(0, "Five Guys", "860 Peachtree St. SW", FoodType.AMERICAN);
+        Restaurant fourGirls = new Restaurant(1, "Four Girls", "1253 Caroline St. NW", FoodType.AMERICAN);
+        mRestaurants.add(fiveGuys);
+        mRestaurants.add(fourGirls);
     }
 
     private class MyListAdapter extends ArrayAdapter<Restaurant> {
@@ -95,6 +109,9 @@ public class NearbyMenuFragment extends Fragment {
 
             TextView distanceText = (TextView)itemView.findViewById(R.id.restDistance);
             distanceText.setText(thisRest.getLocation());
+
+            TextView typeText = (TextView) itemView.findViewById(R.id.restType);
+            typeText.setText(thisRest.getType().name());
 
             return itemView;
         }
