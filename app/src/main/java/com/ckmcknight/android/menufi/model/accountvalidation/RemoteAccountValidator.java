@@ -2,8 +2,8 @@ package com.ckmcknight.android.menufi.model.accountvalidation;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.ckmcknight.android.menufi.model.datahandlers.NetworkController;
-import com.ckmcknight.android.menufi.model.datahandlers.RemoteUrls;
+import com.ckmcknight.android.menufi.model.datafetchers.NetworkController;
+import com.ckmcknight.android.menufi.model.datafetchers.RemoteUrls;
 
 import org.json.JSONObject;
 

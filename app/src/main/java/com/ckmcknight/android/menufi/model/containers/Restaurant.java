@@ -9,33 +9,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Wyckoff on 11/14/2017.
- */
-
 public class Restaurant {
     private static final String TAG = "Restaurant";
 
     private String name;
-    private String location;
+    private int price;
     private FoodType type;
     private int id;
 
-    public Restaurant(int id, String name, String location, FoodType type) {
+    public Restaurant(int id, String name, int price, FoodType type) {
         this.id = id;
         this.name = name;
-        this.location = location;
         this.type = type;
+        this.price = price;
     }
 
     public static Restaurant from(JSONObject jsonObject) {
         try {
-            int id = jsonObject.getInt("id");
+            int id = jsonObject.getInt("restaurantId");
             String name = jsonObject.getString("name");
-            String location =jsonObject.getString("location");
+            int price = jsonObject.getInt("price");
             FoodType type = FoodType.AMERICAN;
-            return new Restaurant(id, name, location, type);
-        } catch(JSONException e) {
+            return new Restaurant(id, name, price, type);
+        } catch (JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
         }
         return null;
@@ -58,8 +54,8 @@ public class Restaurant {
         return name;
     }
 
-    public String getLocation() {
-        return location;
+    public int getPrice() {
+        return price;
     }
 
     public FoodType getType() {
@@ -70,4 +66,12 @@ public class Restaurant {
         return id;
     }
 
+    public static JsonCreator<Restaurant> getCreator() {
+        return new JsonCreator<Restaurant>() {
+            @Override
+            public Restaurant createFromJsonObject(JSONObject object) {
+                return from(object);
+            }
+        };
+    }
 }

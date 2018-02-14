@@ -12,9 +12,9 @@ import javax.inject.Singleton;
 @Singleton
 public class UserSharedPreferences {
     private static final String SHARED_PREFERENCE_KEY = "com.ckmcknight.android.menufi";
-    private static final String EMAIL_KEY = "EMAIL_KEY";
     private static final String SESSION_TOKEN_KEY = "SESSION_TOKEN_KEY";
     private static final String READ_ERROR_DEFAULT = "READ_ERROR_DEFAULT";
+    private static final String DIETARY_PREFERENCE_KEY = "DIETARY_PREFERENCE_KEY";
 
     private SessionToken sessionToken = new SessionToken("");
     private SharedPreferences sharedPreferences;

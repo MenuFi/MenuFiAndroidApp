@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
-import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
+import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 
 import org.json.JSONArray;
 
@@ -41,17 +41,6 @@ public class MenuItemFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    private void populateMenuItemList() {
-                menuDataRetriever.retrieveMenuItemsList(new Response.Listener<JSONArray>(){
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        menuItemsList.clear();
-                        menuItemsList.addAll(MenuItem.menuListFrom(response));
-                        listAdapter.notifyDataSetChanged();
-                    }
-                },pos);
     }
 
     @Override

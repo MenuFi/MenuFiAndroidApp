@@ -6,7 +6,7 @@ import com.ckmcknight.android.menufi.dagger.modules.AccountModule;
 import com.ckmcknight.android.menufi.dagger.modules.ApplicationModule;
 import com.ckmcknight.android.menufi.model.accountvalidation.AccountValidator;
 import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
-import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
+import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 
 import javax.inject.Singleton;
 

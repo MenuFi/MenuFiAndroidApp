@@ -3,7 +3,7 @@ package com.ckmcknight.android.menufi.dagger.modules;
 import com.ckmcknight.android.menufi.model.accountvalidation.AccountValidator;
 import com.ckmcknight.android.menufi.model.accountvalidation.MockAccountValidator;
 import com.ckmcknight.android.menufi.model.accountvalidation.RemoteAccountValidator;
-import com.ckmcknight.android.menufi.model.datahandlers.NetworkController;
+import com.ckmcknight.android.menufi.model.datafetchers.NetworkController;
 
 import javax.inject.Singleton;
 

@@ -9,11 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ckmcknight.android.menufi.model.datahandlers.NetworkController.TAG;
-
-/**
- * Created by charlie on 11/20/17.
- */
+import static com.ckmcknight.android.menufi.model.datafetchers.NetworkController.TAG;
 
 public class MenuItem {
     private String name;
@@ -58,9 +54,6 @@ public class MenuItem {
             float price = (float)(jsonObject.getDouble("price"));
             float rating = (float)(jsonObject.getDouble("rating"));
             int calories = (int) (jsonObject.getInt("calories"));
-
-
-
             return new MenuItem(name, description,price,rating);
         } catch(JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
@@ -81,6 +74,13 @@ public class MenuItem {
         return null;
     }
 
-
+    public static JsonCreator<MenuItem> getCreator() {
+        return new JsonCreator<MenuItem>() {
+            @Override
+            public MenuItem createFromJsonObject(JSONObject object) {
+                return from(object);
+            }
+        };
+    }
 }
 

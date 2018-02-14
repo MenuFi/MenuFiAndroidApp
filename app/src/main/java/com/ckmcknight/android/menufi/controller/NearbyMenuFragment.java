@@ -16,7 +16,7 @@ import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.containers.FoodType;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
-import com.ckmcknight.android.menufi.model.datahandlers.RemoteMenuDataRetriever;
+import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 
 import org.json.JSONArray;
 
@@ -35,12 +35,11 @@ public class NearbyMenuFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_nearby_menu, container, false);
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
-        mockPopulateRestaurantList();
+        menuDataRetriever.requestNearbyRestaurantList(mRestaurants, listAdapter, Restaurant.getCreator());
+        //mockPopulateRestaurantList();
     }
 
     @Override
@@ -65,24 +64,14 @@ public class NearbyMenuFragment extends Fragment {
                         .commit();
             }
         });
-        mRestaurants.clear();
-    }
-
-    private void populateRestaurantList() {
-                menuDataRetriever.retrieveNearbyRestaurantList(new Response.Listener<JSONArray>(){
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        mRestaurants.clear();
-                        mRestaurants.addAll(Restaurant.restaurantListFrom(response));
-                        listAdapter.notifyDataSetChanged();
-                    }
-                });
+        menuDataRetriever.requestNearbyRestaurantList(mRestaurants, listAdapter, Restaurant.getCreator());
+        //mockPopulateRestaurantList();
     }
 
     //create mock restaurants and menu items in order to show view items
     private void mockPopulateRestaurantList() {
-        Restaurant fiveGuys = new Restaurant(0, "Five Guys", "860 Peachtree St. SW", FoodType.AMERICAN);
-        Restaurant fourGirls = new Restaurant(1, "Four Girls", "1253 Caroline St. NW", FoodType.AMERICAN);
+        Restaurant fiveGuys = new Restaurant(0, "Five Guys", 2, FoodType.AMERICAN);
+        Restaurant fourGirls = new Restaurant(1, "Four Girls", 3, FoodType.AMERICAN);
         mRestaurants.add(fiveGuys);
         mRestaurants.add(fourGirls);
     }
@@ -107,7 +96,7 @@ public class NearbyMenuFragment extends Fragment {
             nameText.setText(thisRest.getName());
 
             TextView distanceText = (TextView)itemView.findViewById(R.id.restDistance);
-            distanceText.setText(thisRest.getLocation());
+            distanceText.setText("We don't have locations change to price");
 
             TextView typeText = (TextView) itemView.findViewById(R.id.restType);
             typeText.setText(thisRest.getType().name());

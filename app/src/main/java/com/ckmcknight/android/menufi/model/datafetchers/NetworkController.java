@@ -1,4 +1,4 @@
-package com.ckmcknight.android.menufi.model.datahandlers;
+package com.ckmcknight.android.menufi.model.datafetchers;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -22,7 +22,7 @@ public class NetworkController {
         mRequestQueue = Volley.newRequestQueue(context);
     }
 
-    public RequestQueue getRequestQueue() {
+    private RequestQueue getRequestQueue() {
         return mRequestQueue;
     }
 
