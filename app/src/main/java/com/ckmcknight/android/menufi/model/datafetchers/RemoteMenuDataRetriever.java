@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.JsonCreator;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
 
@@ -47,7 +48,13 @@ public class RemoteMenuDataRetriever {
         makeJsonObjectRequest(url, listener, errorListener);
     }
 
-    private void makeJsonObjectRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void requestDietaryPreferences(Response.Listener<JSONObject> listener) {
+        Response.ErrorListener errorListener = errorListenerCreator("Received error while querying dietary preferences");
+        String url = RemoteUrls.BASE_SERVER_URL + RemoteUrls.PREFERENCES_EXT;
+        makeJsonObjectRequest(url, listener, errorListener);
+    }
+
+    public void makeJsonObjectRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, errorListener);
         controller.addToRequestQueue(jsObjRequest);
     }
@@ -76,8 +83,6 @@ public class RemoteMenuDataRetriever {
             @Override
             public void onErrorResponse(VolleyError error) {
                 logger.info(logMessage);
-                logger.info(error.getLocalizedMessage());
-
             }
         };
     }

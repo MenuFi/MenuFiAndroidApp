@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ckmcknight.android.menufi.dagger.modules.AccountModule;
 import com.ckmcknight.android.menufi.dagger.modules.ApplicationModule;
 import com.ckmcknight.android.menufi.model.accountvalidation.AccountValidator;
+import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
 import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 
@@ -20,4 +21,5 @@ public interface MenuFiComponent {
     AccountValidator accountValidator();
     Context getApplicationContext();
     UserSharedPreferences getUserSharedPreferences();
+    DietaryPreferenceStore getDietaryPreferenceStore();
 }

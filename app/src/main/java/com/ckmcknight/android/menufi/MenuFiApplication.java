@@ -14,10 +14,15 @@ public class MenuFiApplication extends Application {
         super.onCreate();
         ApplicationModule applicationModule = new ApplicationModule(this);
         menuFiComponent = DaggerMenuFiComponent.builder().applicationModule(applicationModule).build();
+        startUp();
     }
 
     public MenuFiComponent getMenuFiComponent() {
         return menuFiComponent;
+    }
+
+    private void startUp() {
+        menuFiComponent.getDietaryPreferenceStore().syncDietaryPreferences();
     }
 
 }

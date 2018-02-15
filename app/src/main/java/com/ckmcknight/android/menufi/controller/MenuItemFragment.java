@@ -21,10 +21,6 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Wyckoff on 11/21/2017.
- */
-
 public class MenuItemFragment extends Fragment {
     private List<MenuItem> menuItemsList = new ArrayList<>();
     private MyListAdapter listAdapter;

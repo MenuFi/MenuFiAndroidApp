@@ -5,4 +5,8 @@ public class RemoteUrls {
     public static String LOGIN_EXT = "/patron/loginToken/";
     public static String REGISTRATION_EXT = "/patron/registration/";
     public static String RESTAURANTS_EXT = "/restaurants";
+    public static String PREFERENCES_EXT = "/preferences";
+
+
+    public static String JSON_DATA_KEY = "data";
 }

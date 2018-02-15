@@ -14,14 +14,17 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.FoodType;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
+import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NearbyMenuFragment extends Fragment {
     private List<Restaurant> mRestaurants = new ArrayList<>();
