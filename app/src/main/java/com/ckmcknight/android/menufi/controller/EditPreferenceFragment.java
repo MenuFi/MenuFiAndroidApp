@@ -68,7 +68,8 @@ public class EditPreferenceFragment extends Fragment{
         }
 
        ListView preferencesListView = getView().findViewById(R.id.check_list);
-       ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.checkbox_layout, R.id.text, mPreferences);
+        preferencesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.checkbox_layout, R.id.text, mPreferences);
        preferencesListView.setAdapter(adapter);
     }
 }
