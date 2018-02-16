@@ -58,18 +58,19 @@ public class EditPreferenceFragment extends Fragment{
 
     @Override
     public void onStart() {
-       super.onStart();
-       preferenceDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
-       dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
+        super.onStart();
+        preferenceDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
+        dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
 
-        Collection<DietaryPreference> collection = dietaryPreferenceStore.getDietaryPreferences();
-        for (Iterator<DietaryPreference> iterator = collection.iterator(); iterator.hasNext();) {
-            mPreferences.add(iterator.next().getName());
+        Collection<DietaryPreference> availiblePreferences = dietaryPreferenceStore.getDietaryPreferences();
+        for (DietaryPreference preference: availiblePreferences) {
+            if (preference.getType() == 1) {
+                mPreferences.add(preference.getName());
+            }
         }
-
-       ListView preferencesListView = getView().findViewById(R.id.check_list);
+        ListView preferencesListView = getView().findViewById(R.id.check_list);
         preferencesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.checkbox_layout, R.id.text, mPreferences);
-       preferencesListView.setAdapter(adapter);
+        preferencesListView.setAdapter(adapter);
     }
 }

@@ -76,10 +76,10 @@ public class MenuItemFragment extends Fragment {
     }
 
     private void mockPopulateMenuItemList() {
-        MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f);
+        MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f, 1200);
         burger.setCalories(350);
-        MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f);
-        MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f);
+        MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f, 1400);
+        MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f, 8000);
         menuItemsList.clear();
         menuItemsList.add(burger);
         menuItemsList.add(bbqBurger);
@@ -111,7 +111,6 @@ public class MenuItemFragment extends Fragment {
 
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
             ratingsText.setText(String.valueOf(thisItem.getRatings()));
-
 
             return itemView;
         }

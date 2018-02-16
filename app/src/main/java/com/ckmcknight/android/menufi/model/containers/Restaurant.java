@@ -14,14 +14,14 @@ public class Restaurant {
 
     private String name;
     private int price;
-    private FoodType type;
     private int id;
+    private String pictureUri;
 
-    public Restaurant(int id, String name, int price, FoodType type) {
+    public Restaurant(int id, String name, int price, String pictureUri) {
         this.id = id;
         this.name = name;
-        this.type = type;
         this.price = price;
+        this.pictureUri = pictureUri;
     }
 
     public static Restaurant from(JSONObject jsonObject) {
@@ -29,8 +29,8 @@ public class Restaurant {
             int id = jsonObject.getInt("restaurantId");
             String name = jsonObject.getString("name");
             int price = jsonObject.getInt("price");
-            FoodType type = FoodType.AMERICAN;
-            return new Restaurant(id, name, price, type);
+            String pictureUri = jsonObject.getString("pictureUri");
+            return new Restaurant(id, name, price, pictureUri);
         } catch (JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
         }
@@ -58,8 +58,8 @@ public class Restaurant {
         return price;
     }
 
-    public FoodType getType() {
-        return type;
+    public String getPictureUri() {
+        return pictureUri;
     }
 
     public int getId() {

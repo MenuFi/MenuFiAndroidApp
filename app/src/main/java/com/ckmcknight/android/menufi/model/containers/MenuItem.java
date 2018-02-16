@@ -12,19 +12,22 @@ import java.util.List;
 import static com.ckmcknight.android.menufi.model.datafetchers.NetworkController.TAG;
 
 public class MenuItem {
+    private int itemId;
+    private int restaurantId;
     private String name;
     private String description;
     private float price;
     private float ratings;
     private int calories;
+    private String pictureUri;
 
 
-    public MenuItem(String name, String description, float price, float ratings) {
+    public MenuItem(String name, String description, float price, float ratings, int calories) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.ratings = ratings;
-        int calories;
+        this.calories = calories;
     }
 
     public String getName() {
@@ -53,8 +56,8 @@ public class MenuItem {
             String description =jsonObject.getString("description");
             float price = (float)(jsonObject.getDouble("price"));
             float rating = (float)(jsonObject.getDouble("rating"));
-            int calories = (int) (jsonObject.getInt("calories"));
-            return new MenuItem(name, description,price,rating);
+            int calories = (jsonObject.getInt("calories"));
+            return new MenuItem(name, description,price,rating, calories);
         } catch(JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
         }

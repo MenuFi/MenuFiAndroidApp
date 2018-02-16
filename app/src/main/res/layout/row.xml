@@ -18,25 +18,14 @@
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/restDistance"
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/restName"
         android:layout_alignStart="@+id/restName"
         android:layout_below="@+id/restName"
         android:layout_marginBottom="10dp"
-        android:text="Address"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/restType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/restName"
-        android:layout_alignStart="@+id/restName"
-        android:layout_below="@+id/restDistance"
-        android:layout_marginBottom="10dp"
-        android:text="Food Type"
+        android:text="Price: "
         android:textSize="15sp" />
 
 </RelativeLayout>

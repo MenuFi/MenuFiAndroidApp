@@ -26,10 +26,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ProfileFragment extends Fragment {
 
     @BindView(R.id.edit_preferences_button) Button editPrefButton;
+    @BindView(R.id.edit_allergies_button) Button editAllergiesButton;
     private DietaryPreferenceStore dietaryPreferenceStore;
     private RemoteMenuDataRetriever preferenceDataRetriever;
 
@@ -39,8 +41,8 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v  = inflater.inflate(R.layout.fragment_profile, container, false);
-        editPrefButton = (Button) v.findViewById(R.id.edit_preferences_button);
-        editPrefButton.setOnClickListener(new View.OnClickListener() {
+        ButterKnife.bind(this, v);
+        editAllergiesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new EditPreferenceFragment();
@@ -51,8 +53,7 @@ public class ProfileFragment extends Fragment {
                         .commit();
             }
         });
-
-
+        getActivity().setTitle("My Profile");
         return v;
     }
 
@@ -66,11 +67,13 @@ public class ProfileFragment extends Fragment {
 
         TextView text1 = getView().findViewById(R.id.profile_preferences_textview);
 
+        /**
         Collection<DietaryPreference> collection = dietaryPreferenceStore.getDietaryPreferences();
         for (Iterator<DietaryPreference> iterator = collection.iterator(); iterator.hasNext();) {
             String text = text1.getText() + iterator.next().getName() + ", ";
             text1.setText(text);
         }
+         */
     }
 
     @Override

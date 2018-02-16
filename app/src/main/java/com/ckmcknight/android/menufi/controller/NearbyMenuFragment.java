@@ -11,20 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
-import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
-import com.ckmcknight.android.menufi.model.containers.FoodType;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
-import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class NearbyMenuFragment extends Fragment {
     private List<Restaurant> mRestaurants = new ArrayList<>();
@@ -35,6 +28,7 @@ public class NearbyMenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Nearby Restaurants");
         return inflater.inflate(R.layout.fragment_nearby_menu, container, false);
     }
 
@@ -74,8 +68,8 @@ public class NearbyMenuFragment extends Fragment {
 
     //create mock restaurants and menu items in order to show view items
     private void mockPopulateRestaurantList() {
-        Restaurant fiveGuys = new Restaurant(0, "Five Guys", 2, FoodType.AMERICAN);
-        Restaurant fourGirls = new Restaurant(1, "Four Girls", 3, FoodType.AMERICAN);
+        Restaurant fiveGuys = new Restaurant(0, "Five Guys", 2, "no pic");
+        Restaurant fourGirls = new Restaurant(1, "Four Girls", 3, "no pic");
         mRestaurants.add(fiveGuys);
         mRestaurants.add(fourGirls);
     }
@@ -99,11 +93,9 @@ public class NearbyMenuFragment extends Fragment {
             TextView nameText = (TextView)itemView.findViewById(R.id.restName);
             nameText.setText(thisRest.getName());
 
-            TextView distanceText = (TextView)itemView.findViewById(R.id.restDistance);
-            distanceText.setText("We don't have locations change to price");
-
-            TextView typeText = (TextView) itemView.findViewById(R.id.restType);
-            typeText.setText(thisRest.getType().name());
+            TextView priceText = (TextView)itemView.findViewById(R.id.price);
+            int dollars = thisRest.getPrice();
+            priceText.setText(String.format("%0" + dollars + "d", 0).replace("0", "$"));
 
             return itemView;
         }
