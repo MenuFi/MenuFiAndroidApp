@@ -26,10 +26,12 @@ public class MenuItemFragment extends Fragment {
     private MyListAdapter listAdapter;
     private int pos;
     private RemoteMenuDataRetriever menuDataRetriever;
+    private LayoutInflater inflater;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        this.inflater = inflater;
         Bundle bundle = this.getArguments();
         getActivity().setTitle(bundle.getString("name"));
         return inflater.inflate(R.layout.fragment_menu_item, container, false);
@@ -85,7 +87,7 @@ public class MenuItemFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.item_row, parent, false);
+                itemView = inflater.inflate(R.layout.item_row, parent, false);
 
             }
 
