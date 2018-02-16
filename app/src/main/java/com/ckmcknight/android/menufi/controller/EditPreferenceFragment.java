@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 import com.ckmcknight.android.menufi.dagger.components.MenuFiComponent;
 import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
+import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -36,9 +41,10 @@ import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
  */
 
 public class EditPreferenceFragment extends Fragment{
-    private RemoteMenuDataRetriever preferenceDataRetriever;
     private DietaryPreferenceStore dietaryPreferenceStore;
-    private List<String> mPreferences = new ArrayList<>();
+    private UserSharedPreferences sharedPreferences;
+    @BindView(R.id.check_list) ListView preferencesListView;
+    @BindView(R.id.save_button) Button saveButton;
 
 
     @Override
@@ -46,6 +52,7 @@ public class EditPreferenceFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_preferences, container, false);
+        ButterKnife.bind(this, v);
 
         return v;
     }
@@ -59,16 +66,12 @@ public class EditPreferenceFragment extends Fragment{
     @Override
     public void onStart() {
        super.onStart();
-       preferenceDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
        dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
+       sharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
-        Collection<DietaryPreference> collection = dietaryPreferenceStore.getDietaryPreferences();
-        for (Iterator<DietaryPreference> iterator = collection.iterator(); iterator.hasNext();) {
-            mPreferences.add(iterator.next().getName());
-        }
-
-       ListView preferencesListView = getView().findViewById(R.id.check_list);
-       ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.checkbox_layout, R.id.text, mPreferences);
+       List<DietaryPreference> availibleDietaryPreferences = new ArrayList<>(dietaryPreferenceStore.getDietaryPreferences());
+       List<DietaryPreference> selectedIds = sharedPreferences.getUserDietaryPreferences();
+       ArrayAdapter<DietaryPreference> adapter = new ArrayAdapter<>(getActivity(), R.layout.checkbox_layout, R.id.text, availibleDietaryPreferences);
        preferencesListView.setAdapter(adapter);
     }
 }
