@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
@@ -24,16 +25,20 @@ import java.util.List;
 public class MenuItemFragment extends Fragment {
     private List<MenuItem> menuItemsList = new ArrayList<>();
     private MyListAdapter listAdapter;
-    private int pos;
     private RemoteMenuDataRetriever menuDataRetriever;
     private LayoutInflater inflater;
+    private String name;
+    private int restaurantId;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         this.inflater = inflater;
+
         Bundle bundle = this.getArguments();
-        getActivity().setTitle(bundle.getString("name"));
+        name = bundle.getString("name");
+        restaurantId = bundle.getInt("id");
+        getActivity().setTitle(name);
         return inflater.inflate(R.layout.fragment_menu_item, container, false);
     }
     @Override
@@ -44,11 +49,13 @@ public class MenuItemFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mockPopulateMenuItemList();
+        menuDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
+        //mockPopulateMenuItemList();
 
         ListView itemListView = getView().findViewById(R.id.menuItemListView);
         listAdapter = new MyListAdapter();
         itemListView.setAdapter(listAdapter);
+        menuDataRetriever.requestMenuItemsList(restaurantId, menuItemsList, listAdapter, MenuItem.getCreator());
 
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

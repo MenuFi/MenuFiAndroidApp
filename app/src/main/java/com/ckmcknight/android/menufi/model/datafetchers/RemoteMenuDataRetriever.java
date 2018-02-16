@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.JsonCreator;
+import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
 
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ public class RemoteMenuDataRetriever {
         makeJsonObjectRequest(url, listener, errorListener);
     }
 
-    public void requestMenuItemsList(int restaurantId, Collection<Restaurant> restaurantList, BaseAdapter adapter, JsonCreator<Restaurant> creator) {
+    public void requestMenuItemsList(int restaurantId, Collection<MenuItem> restaurantList, BaseAdapter adapter, JsonCreator<MenuItem> creator) {
         Response.Listener<JSONObject> listener = listenerCreator(restaurantList, adapter, creator);
         Response.ErrorListener errorListener = errorListenerCreator("Received error while querying menu items");
         String url = RemoteUrls.BASE_SERVER_URL + String.format(Locale.US, RemoteUrls.MENU_ITEMS_FORMAT_EXT, restaurantId);
