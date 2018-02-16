@@ -50,6 +50,20 @@ public class DietaryPreference {
     }
 
     @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {return true;}
+        if (o == null) {return false;}
+        if (!(o instanceof DietaryPreference)) {return false;}
+        DietaryPreference test = (DietaryPreference) o;
+        return this.id == test.id;
+    }
+
+    @Override
     public String toString() {
         return name;
     }

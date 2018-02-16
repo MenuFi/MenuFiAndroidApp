@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.JsonCreator;
+import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
 
 import org.json.JSONArray;
@@ -26,9 +27,6 @@ public class RemoteMenuDataRetriever {
     private NetworkController controller;
     private Logger logger = Logger.getLogger("RemoteMenuDataRetriever");
 
-    private static final String NEARBY_RESTAURANT_QUERY_FORMAT = "/restaurants/nearby?location=%s";
-    private static final String MENU_ITEM_LIST_QUERY_FORMAT = "/items?restaurantId=%d";
-
     @Inject
     RemoteMenuDataRetriever(NetworkController controller) {
         this.controller = controller;
@@ -41,10 +39,10 @@ public class RemoteMenuDataRetriever {
         makeJsonObjectRequest(url, listener, errorListener);
     }
 
-    public void requestMenuItemsList(int restaurantId, Collection<Restaurant> restaurantList, BaseAdapter adapter, JsonCreator<Restaurant> creator) {
+    public void requestMenuItemsList(int restaurantId, Collection<MenuItem> restaurantList, BaseAdapter adapter, JsonCreator<MenuItem> creator) {
         Response.Listener<JSONObject> listener = listenerCreator(restaurantList, adapter, creator);
         Response.ErrorListener errorListener = errorListenerCreator("Received error while querying menu items");
-        String url = RemoteUrls.BASE_SERVER_URL + String.format(Locale.US, MENU_ITEM_LIST_QUERY_FORMAT, restaurantId);
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(Locale.US, RemoteUrls.MENU_ITEMS_FORMAT_EXT, restaurantId);
         makeJsonObjectRequest(url, listener, errorListener);
     }
 

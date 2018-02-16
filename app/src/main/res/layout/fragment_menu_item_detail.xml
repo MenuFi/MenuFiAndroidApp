@@ -11,8 +11,11 @@
         android:id="@+id/foodName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="75dp"
         android:gravity="center"
-        android:layout_marginTop="300dp"
         android:text="Name"
         android:textSize="30sp" />
 
@@ -20,20 +23,26 @@
         android:id="@+id/foodIngredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/foodName"
+        android:layout_marginTop="66dp"
         android:gravity="center"
-        android:layout_alignLeft="@+id/foodName"
-        android:layout_marginTop = "360dp"
-        android:text="Ingredients"
+        android:text="Ingredients:"
+        android:textAlignment="viewStart"
         android:textSize="30sp" />
 
     <TextView
         android:id="@+id/foodCalories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/foodIngredients"
+        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:layout_alignLeft="@+id/foodName"
-        android:layout_marginTop = "480dp"
-        android:text="Calories"
+        android:text="Calories:"
+        android:textAlignment="viewStart"
         android:textSize="30sp" />
 
 </RelativeLayout>

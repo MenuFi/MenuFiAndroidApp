@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
@@ -41,7 +39,6 @@ public class EditPreferenceFragment extends Fragment{
     private RemoteMenuDataRetriever preferenceDataRetriever;
     private DietaryPreferenceStore dietaryPreferenceStore;
     private List<String> mPreferences = new ArrayList<>();
-    private Button saveButton;
 
 
     @Override
@@ -49,13 +46,6 @@ public class EditPreferenceFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_preferences, container, false);
-        saveButton = (Button) v.findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Changes Saved", Toast.LENGTH_LONG).show();
-            }
-        });
 
         return v;
     }
@@ -78,7 +68,6 @@ public class EditPreferenceFragment extends Fragment{
         }
 
        ListView preferencesListView = getView().findViewById(R.id.check_list);
-       preferencesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.checkbox_layout, R.id.text, mPreferences);
        preferencesListView.setAdapter(adapter);
     }

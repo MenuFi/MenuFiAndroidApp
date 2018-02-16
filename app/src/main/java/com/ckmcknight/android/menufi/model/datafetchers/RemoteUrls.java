@@ -5,6 +5,7 @@ public class RemoteUrls {
     public static String LOGIN_EXT = "/patron/loginToken/";
     public static String REGISTRATION_EXT = "/patron/registration/";
     public static String RESTAURANTS_EXT = "/restaurants";
+    public static String MENU_ITEMS_FORMAT_EXT = RESTAURANTS_EXT + "/%s/items";
     public static String PREFERENCES_EXT = "/preferences";
 
 

@@ -59,6 +59,7 @@ public class NearbyMenuFragment extends Fragment {
                 Fragment fragment = new MenuItemFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("name", mRestaurants.get(position).getName());
+                bundle.putInt("id", mRestaurants.get(position).getId());
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
