@@ -19,7 +19,7 @@ import javax.inject.Singleton;
 
 @Singleton
 public class DietaryPreferenceStore {
-    private Map<Integer, DietaryPreference> availiblePreferences;
+    private Map<DietaryPreference.Type, Map<Integer, DietaryPreference>> availiblePreferences;
     private boolean receivedPreferences;
 
     private RemoteMenuDataRetriever dataRetriever;
@@ -28,20 +28,28 @@ public class DietaryPreferenceStore {
     @Inject
     DietaryPreferenceStore(RemoteMenuDataRetriever dataRetriever) {
         availiblePreferences = new HashMap<>();
+        for (DietaryPreference.Type type: DietaryPreference.Type.values()) {
+            availiblePreferences.put(type, new HashMap<Integer, DietaryPreference>());
+        }
         this.dataRetriever = dataRetriever;
         receivedPreferences = false;
     }
 
     public DietaryPreference getDietaryPreference(int id) {
-        return availiblePreferences.get(id);
+        for (Map<Integer, DietaryPreference> preferenceMap: availiblePreferences.values())
+            if (preferenceMap.containsKey(id)) {
+                return preferenceMap.get(id);
+            }
+        logger.warning("Tried to retreive Dietary Preference by id but preference does not exist");
+        return null;
     }
 
-    public Collection<DietaryPreference> getDietaryPreferences() {
-        return availiblePreferences.values();
+    public Collection<DietaryPreference> getDietaryPreferences(DietaryPreference.Type type) {
+        return availiblePreferences.get(type).values();
     }
 
-    public Collection<Integer> getDietaryPreferenceIds() {
-        return availiblePreferences.keySet();
+    public Collection<Integer> getDietaryPreferenceIds(DietaryPreference.Type type) {
+        return availiblePreferences.get(type).keySet();
     }
 
     public boolean getPreferencesReceived() {
@@ -61,7 +69,7 @@ public class DietaryPreferenceStore {
                 receivedPreferences = true;
                 for (int i = 0; i < preferenceList.length(); i++) {
                     DietaryPreference preference = DietaryPreference.from(preferenceList.getJSONObject(i));
-                    availiblePreferences.put(preference.getId(), preference);
+                    availiblePreferences.get(preference.getType()).put(preference.getId(), preference);
                 }
             } catch (JSONException e) {
                 logger.severe("Couldn't retrieve preferences");
