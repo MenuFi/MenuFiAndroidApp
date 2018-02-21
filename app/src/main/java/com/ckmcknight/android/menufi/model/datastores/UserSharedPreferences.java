@@ -9,9 +9,9 @@ import com.ckmcknight.android.menufi.model.containers.SessionToken;
 import com.google.common.base.Joiner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.StringJoiner;
-import java.util.logging.Logger;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +26,7 @@ public class UserSharedPreferences {
     private SessionToken sessionToken = new SessionToken("");
     private SharedPreferences sharedPreferences;
     private DietaryPreferenceStore dietaryPreferenceStore;
-    private List<Integer> dietaryPreferenceIds;
+    private Map<DietaryPreference.Type, List<DietaryPreference>> dietaryPreferenceMap;
     private boolean loggedIn;
 
     @Inject
@@ -45,7 +45,15 @@ public class UserSharedPreferences {
 
     @WorkerThread
     private void writeState() {
-        String dietaryPreferenceString = Joiner.on(",").join(dietaryPreferenceIds);
+        List<String> dietaryPreferenceStringList = new ArrayList<>();
+        for (List<DietaryPreference> preferencesOfType: dietaryPreferenceMap.values()) {
+            List<Integer> ids = new ArrayList<>();
+            for (DietaryPreference preference: preferencesOfType) {
+                ids.add(preference.getId());
+            }
+            dietaryPreferenceStringList.add(Joiner.on(",").join(ids));
+        }
+        String dietaryPreferenceString = Joiner.on(",").join(dietaryPreferenceStringList);
         sharedPreferences.edit()
                 .putString(SESSION_TOKEN_KEY, sessionToken.getTokenValue())
                 .putString(DIETARY_PREFERENCE_KEY, dietaryPreferenceString)
@@ -56,20 +64,24 @@ public class UserSharedPreferences {
     public synchronized void restablishCurrentSession() {
         sessionToken = new SessionToken(sharedPreferences.getString(SESSION_TOKEN_KEY,READ_ERROR_DEFAULT));
         String dietaryPreferenceKey = sharedPreferences.getString(DIETARY_PREFERENCE_KEY, "");
-        dietaryPreferenceIds = new ArrayList<>();
+        dietaryPreferenceMap = new HashMap<>();
+        for (DietaryPreference.Type type: DietaryPreference.Type.values()) {
+            dietaryPreferenceMap.put(type, new ArrayList<DietaryPreference>());
+        }
         for (String s : dietaryPreferenceKey.split(",")) {
             if (!"".equals(s)) {
-                dietaryPreferenceIds.add(Integer.parseInt(s));
+                int id = Integer.parseInt(s);
+                DietaryPreference p = dietaryPreferenceStore.getDietaryPreference(id);
+                dietaryPreferenceMap.get(p.getType()).add(p);
             }
         }
 
     }
 
     @WorkerThread
-    public synchronized boolean logout() {
+    public synchronized void logout() {
         sessionToken = new SessionToken("");
         writeState();
-        return true;
     }
 
     public boolean getLoggedIn() {
@@ -80,26 +92,13 @@ public class UserSharedPreferences {
         return sessionToken;
     }
 
-    public synchronized void setUserDietaryPreferences(List<DietaryPreference> dietaryPreferences) {
-        List<Integer> newDietaryPreferences = new ArrayList<>();
-        for (DietaryPreference preference : dietaryPreferences) {
-            newDietaryPreferences.add(preference.getId());
-        }
-        dietaryPreferenceIds = newDietaryPreferences;
+    public synchronized void setUserDietaryPreferences(DietaryPreference.Type type, List<DietaryPreference> dietaryPreferences) {
+        dietaryPreferenceMap.put(type, dietaryPreferences);
         writeState();
     }
 
-    public synchronized List<DietaryPreference> getUserDietaryPreferences() {
-        List<DietaryPreference> dietaryPreferences = new ArrayList<>();
-        for (int i : dietaryPreferenceIds) {
-            DietaryPreference preference = dietaryPreferenceStore.getDietaryPreference(i);
-            if (preference != null) {
-                dietaryPreferences.add(preference);
-            } else {
-                Logger.getLogger("UserSharedPreferences");
-            }
-        }
-        return dietaryPreferences;
+    public List<DietaryPreference> getUserDietaryPreferences(DietaryPreference.Type type) {
+        return dietaryPreferenceMap.get(type);
     }
 
 }
