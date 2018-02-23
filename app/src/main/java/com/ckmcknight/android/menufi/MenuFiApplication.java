@@ -23,7 +23,6 @@ public class MenuFiApplication extends Application {
 
     private void startUp() {
         menuFiComponent.getDietaryPreferenceStore().syncDietaryPreferences();
-        menuFiComponent.getUserSharedPreferences().restablishCurrentSession();
     }
 
 }

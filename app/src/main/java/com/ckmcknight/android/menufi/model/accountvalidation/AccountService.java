@@ -131,6 +131,7 @@ public class AccountService extends IntentService {
                 String status = response.getString(JSON_STATUS_KEY);
                 if (JSON_STATUS_SUCCESS.equals(status)) {
                     String sessionToken = response.getString(JSON_DATA_KEY);
+                    userSharedPreferences.restablishCurrentSession();
                     userSharedPreferences.establishCurrentSession(new SessionToken(sessionToken));
                     broadcast(BROADCAST_LOG_IN, true);
                 } else {
