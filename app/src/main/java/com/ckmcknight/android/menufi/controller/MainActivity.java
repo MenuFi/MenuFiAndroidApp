@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void setTitle(String title) {
         getSupportActionBar().setTitle(title);
     }

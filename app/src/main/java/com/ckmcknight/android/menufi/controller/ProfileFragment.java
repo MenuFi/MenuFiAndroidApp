@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v  = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, v);
-        editAllergiesButton.setOnClickListener(new View.OnClickListener() {
+        editPrefButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new EditPreferenceFragment();
@@ -59,8 +59,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onStart() {
-        super.onStart();
-
         super.onStart();
         preferenceDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
         dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
