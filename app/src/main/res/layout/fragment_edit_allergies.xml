@@ -14,9 +14,9 @@
         android:layout_height="wrap_content">
 
     </ListView>
-    
+
     <Button
-        android:id="@+id/save_preferences"
+        android:id="@+id/save_allergies"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         android:layout_width="wrap_content"

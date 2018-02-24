@@ -11,44 +11,39 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
+
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
-
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
-
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
-
-
+import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.List;
-import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- * Created by Connor Wyckoff on 2/14/2018.
+ * Created by Connor Wyckoff on 2/24/2018.
  */
 
-public class EditPreferenceFragment extends Fragment{
-    @BindView(R.id.save_preferences) Button saveButton;
+public class EditAllergiesFragment extends Fragment {
+    @BindView(R.id.save_allergies) Button saveButton;
 
     private RemoteMenuDataRetriever preferenceDataRetriever;
     private DietaryPreferenceStore dietaryPreferenceStore;
     private UserSharedPreferences userSharedPreferences;
-    private List<DietaryPreference> mPreferences = new ArrayList<>();
+    private List<DietaryPreference> mAllergies = new ArrayList<>();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_edit_preferences, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit_allergies, container, false);
         ButterKnife.bind(this, v);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,34 +72,34 @@ public class EditPreferenceFragment extends Fragment{
         dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
         userSharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
-        final Collection<DietaryPreference> availiblePreferences = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
-        mPreferences.addAll(availiblePreferences);
-        final ListView preferencesListView = getView().findViewById(R.id.check_list);
+        final Collection<DietaryPreference> availibleAllergies = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.ALLERGY);
+        mAllergies.addAll(availibleAllergies);
+        final ListView allergiesListView = getView().findViewById(R.id.check_list);
         //preferencesListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        MyListAdapter adapter = new MyListAdapter();
-        preferencesListView.setAdapter(adapter);
-        preferencesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        EditAllergiesFragment.MyListAdapter adapter = new MyListAdapter();
+        allergiesListView.setAdapter(adapter);
+        allergiesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckedTextView nameText = (CheckedTextView) view.findViewById(R.id.text);
                 nameText.toggle();
 
-                DietaryPreference thisPref = mPreferences.get(position);
-                List<DietaryPreference> currPref = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.PREFERENCE);
-                if (currPref.contains(thisPref)) {
-                    currPref.remove(thisPref);
-                } else if (!currPref.contains(thisPref)) {
-                    currPref.add(thisPref);
+                DietaryPreference thisAllergy = mAllergies.get(position);
+                List<DietaryPreference> currPref = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.ALLERGY);
+                if (currPref.contains(thisAllergy)) {
+                    currPref.remove(thisAllergy);
+                } else if (!currPref.contains(thisAllergy)) {
+                    currPref.add(thisAllergy);
                 }
-                userSharedPreferences.setUserDietaryPreferences(DietaryPreference.Type.PREFERENCE,currPref);
+                userSharedPreferences.setUserDietaryPreferences(DietaryPreference.Type.ALLERGY,currPref);
             }
         });
     }
 
     private class MyListAdapter extends ArrayAdapter<DietaryPreference> {
         public MyListAdapter() {
-            super(getActivity(), R.layout.checkbox_layout, mPreferences);
+            super(getActivity(), R.layout.checkbox_layout, mAllergies);
         }
 
         @Override
@@ -114,13 +109,13 @@ public class EditPreferenceFragment extends Fragment{
                 itemView = getActivity().getLayoutInflater().inflate(R.layout.checkbox_layout, parent, false);
             }
 
-            DietaryPreference thisPref = mPreferences.get(position);
+            DietaryPreference thisAllerg = mAllergies.get(position);
 
 
             CheckedTextView nameText = itemView.findViewById(R.id.text);
-            nameText.setText(thisPref.getName());
+            nameText.setText(thisAllerg.getName());
 
-            if (userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.PREFERENCE).contains(thisPref)) {
+            if (userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.ALLERGY).contains(thisAllerg)) {
                 nameText.setChecked(true);
             } else {
                 nameText.setChecked(false);
@@ -131,3 +126,4 @@ public class EditPreferenceFragment extends Fragment{
         }
     }
 }
+

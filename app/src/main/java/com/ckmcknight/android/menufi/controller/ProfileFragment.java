@@ -53,6 +53,18 @@ public class ProfileFragment extends Fragment {
                         .commit();
             }
         });
+
+        editAllergiesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new EditAllergiesFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentLocLayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         getActivity().setTitle("My Profile");
         return v;
     }

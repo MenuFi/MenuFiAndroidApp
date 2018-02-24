@@ -58,15 +58,18 @@
 
     </LinearLayout>
 
+
     <Button
-        android:id="@+id/edit_allergies_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_preferences_button"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="68dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Edit Allergies"
+        android:text="Edit Preferences"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,14 +77,16 @@
         app:layout_constraintVertical_bias="0.98" />
 
     <Button
-        android:id="@+id/edit_preferences_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_allergies_button"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Edit Preferences"
+        android:text="Edit Allergies"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
