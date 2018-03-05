@@ -14,18 +14,22 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
+import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MenuItemFragment extends Fragment {
     private List<MenuItem> menuItemsList = new ArrayList<>();
     private MyListAdapter listAdapter;
     private RemoteMenuDataRetriever menuDataRetriever;
+    private DietaryPreferenceStore dietaryPreferenceStore;
     private LayoutInflater inflater;
     private String name;
     private int restaurantId;
@@ -50,12 +54,13 @@ public class MenuItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
         menuDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
+        dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
         //mockPopulateMenuItemList();
 
         ListView itemListView = getView().findViewById(R.id.menuItemListView);
         listAdapter = new MyListAdapter();
         itemListView.setAdapter(listAdapter);
-        menuDataRetriever.requestMenuItemsList(restaurantId, menuItemsList, listAdapter, MenuItem.getCreator());
+        menuDataRetriever.requestMenuItemsList(restaurantId, menuItemsList, listAdapter, MenuItem.getCreator(dietaryPreferenceStore));
 
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,10 +81,10 @@ public class MenuItemFragment extends Fragment {
     }
 
     private void mockPopulateMenuItemList() {
-        MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f, 1200);
+        MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f, 1200, new ArrayList<DietaryPreference>());
         burger.setCalories(350);
-        MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f, 1400);
-        MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f, 8000);
+        MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f, 1400, new ArrayList<DietaryPreference>());
+        MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f, 8000, new ArrayList<DietaryPreference>());
         menuItemsList.clear();
         menuItemsList.add(burger);
         menuItemsList.add(bbqBurger);

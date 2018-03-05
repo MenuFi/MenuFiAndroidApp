@@ -1,5 +1,7 @@
 package com.ckmcknight.android.menufi.model.datastores;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
@@ -9,8 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -43,6 +47,19 @@ public class DietaryPreferenceStore {
         logger.warning("Tried to retreive Dietary Preference by id but preference does not exist");
         return null;
     }
+
+    public List<DietaryPreference> getDietaryPreferencesList(JSONArray array) {
+        List<DietaryPreference> dietaryPreferences = new ArrayList<>();
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                dietaryPreferences.add(getDietaryPreference(array.getInt(i)));
+            }
+        } catch (JSONException e) {
+            logger.severe("Error while parsing list of DietaryPreferences:" + e.getMessage());
+        }
+        return dietaryPreferences;
+    }
+
 
     public Collection<DietaryPreference> getDietaryPreferences(DietaryPreference.Type type) {
         return availiblePreferences.get(type).values();
