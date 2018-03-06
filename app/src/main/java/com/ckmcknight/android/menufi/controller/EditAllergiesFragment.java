@@ -111,7 +111,6 @@ public class EditAllergiesFragment extends Fragment {
 
             DietaryPreference thisAllerg = mAllergies.get(position);
 
-
             CheckedTextView nameText = itemView.findViewById(R.id.text);
             nameText.setText(thisAllerg.getName());
 
@@ -120,8 +119,6 @@ public class EditAllergiesFragment extends Fragment {
             } else {
                 nameText.setChecked(false);
             }
-
-
             return itemView;
         }
     }

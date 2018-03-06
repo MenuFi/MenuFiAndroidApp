@@ -23,6 +23,7 @@
         android:layout_gravity="start">
 
         <Switch
+            android:id="@+id/allergy_filter"
             android:text="Allergy Filter"
             android:textColor="@color/colorPrimary"
             android:theme="@style/ToggleSwitch"
@@ -30,6 +31,17 @@
             android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <Switch
+            android:id="@+id/preferences_filter"
+            android:text="Preferences Filter"
+            android:textColor="@color/colorPrimary"
+            android:theme="@style/ToggleSwitch"
+            android:layout_marginTop="155dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
 
     </android.support.design.widget.NavigationView>
 

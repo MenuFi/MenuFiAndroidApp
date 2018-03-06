@@ -9,9 +9,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.ckmcknight.android.menufi.R;
 
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_menu) NavigationView mNav;
     ActionBarDrawerToggle mActionBarDrawerToggle;
+    private Switch allergySwitch;
 
 
     @Override
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        allergySwitch = findViewById(R.id.allergy_filter);
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.in, R.string.out);
 
@@ -72,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
+
+        Intent aIntent = new Intent(this, MenuItemFragment.class);
+        aIntent.putExtra("Allergy", allergySwitch.isChecked());
         return true;
     }
 

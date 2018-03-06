@@ -116,7 +116,6 @@ public class EditPreferenceFragment extends Fragment{
 
             DietaryPreference thisPref = mPreferences.get(position);
 
-
             CheckedTextView nameText = itemView.findViewById(R.id.text);
             nameText.setText(thisPref.getName());
 
@@ -125,8 +124,6 @@ public class EditPreferenceFragment extends Fragment{
             } else {
                 nameText.setChecked(false);
             }
-
-
             return itemView;
         }
     }
