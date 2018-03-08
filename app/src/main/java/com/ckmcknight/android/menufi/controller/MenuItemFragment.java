@@ -58,6 +58,9 @@ public class MenuItemFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        allergySwitch.toggle();
+        allergySwitch.toggle();
+        //filterAllergy(allergySwitch.isChecked());
     }
 
     @Override
@@ -76,24 +79,6 @@ public class MenuItemFragment extends Fragment {
         listAdapter = new MyListAdapter();
         itemListView.setAdapter(listAdapter);
 
-
-        allergySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (int i = 0; i < menuItemsList.size(); i++) {
-                    if (allergySwitch.isChecked()) {
-                        List<DietaryPreference> itemAllergies = menuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.ALLERGY);
-                        for (DietaryPreference pref : itemAllergies) {
-                            if (allergies.contains(pref)) {
-                                itemListView.getChildAt(i).setBackgroundResource(R.color.oldGold);
-                            }
-                        }
-                    } else {
-                        itemListView.getChildAt(i).setBackgroundResource(R.color.white);
-                    }
-                }
-            }
-        });
 
 
 
@@ -118,8 +103,20 @@ public class MenuItemFragment extends Fragment {
        // menuItemsList.clear();
     }
 
-    private void filterAllergy(ListView listV) {
-
+    private void filterAllergy(boolean checked) {
+        Log.e("FILTERING ALLERGIES", Boolean.toString(checked));
+        for (int i = 0; i < menuItemsList.size(); i++) {
+            if (checked) {
+                List<DietaryPreference> itemAllergies = menuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.ALLERGY);
+                for (DietaryPreference pref : itemAllergies) {
+                    if (allergies.contains(pref)) {
+                        itemListView.getChildAt(i).setBackgroundResource(R.color.oldGold);
+                    }
+                }
+            } else {
+                itemListView.getChildAt(i).setBackgroundResource(R.color.white);
+            }
+        }
     }
 
 

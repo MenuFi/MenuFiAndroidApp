@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.nav_menu) NavigationView mNav;
     ActionBarDrawerToggle mActionBarDrawerToggle;
     private Switch allergySwitch;
+    private Switch preferencesSwitch;
     public static final String ALLERGY_TOGGLE_ACTION = "ALLERGY_TOGGLE_ACTION";
+    public static final String PREFERENCES_TOGGLE_ACTION = "PREFERENCES_TOGGLE_ACTION";
     public static final String BROADCAST_STATUS_CHECKED = "BROADCAST_STATUS_CHECKED";
 
 
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         allergySwitch = findViewById(R.id.allergy_filter);
+        preferencesSwitch = findViewById(R.id.preferences_filter);
+        allergySwitch.setOnCheckedChangeListener(allergyToggleSwitched);
+        preferencesSwitch.setOnCheckedChangeListener(preferencesToggleSwitched);
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.in, R.string.out);
 
@@ -97,11 +102,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Intent allergyBroadcastIntent = new Intent();
-                allergyBroadcastIntent.setAction("allergyToggleSwitched");
+                allergyBroadcastIntent.setAction(ALLERGY_TOGGLE_ACTION);
                 allergyBroadcastIntent.putExtra(BROADCAST_STATUS_CHECKED, isChecked);
+                sendBroadcast(allergyBroadcastIntent);
             }
         };
 
+    CompoundButton.OnCheckedChangeListener preferencesToggleSwitched =
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Intent preferecesBroadcastIntent = new Intent();
+                    preferecesBroadcastIntent.setAction(PREFERENCES_TOGGLE_ACTION);
+                    preferecesBroadcastIntent.putExtra(BROADCAST_STATUS_CHECKED, isChecked);
+                    sendBroadcast(preferecesBroadcastIntent);
+                }
+            };
 
     public void setTitle(String title) {
         getSupportActionBar().setTitle(title);
