@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.nav_menu) NavigationView mNav;
     ActionBarDrawerToggle mActionBarDrawerToggle;
     private Switch allergySwitch;
+    public static final String ALLERGY_TOGGLE_ACTION = "ALLERGY_TOGGLE_ACTION";
+    public static final String BROADCAST_STATUS_CHECKED = "BROADCAST_STATUS_CHECKED";
 
 
     @Override
@@ -78,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
-
-        Intent aIntent = new Intent(this, MenuItemFragment.class);
-        aIntent.putExtra("Allergy", allergySwitch.isChecked());
         return true;
     }
 
@@ -91,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    CompoundButton.OnCheckedChangeListener allergyToggleSwitched =
+        new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Intent allergyBroadcastIntent = new Intent();
+                allergyBroadcastIntent.setAction("allergyToggleSwitched");
+                allergyBroadcastIntent.putExtra(BROADCAST_STATUS_CHECKED, isChecked);
+            }
+        };
 
 
     public void setTitle(String title) {
