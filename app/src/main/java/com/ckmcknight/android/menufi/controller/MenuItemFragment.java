@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 public class MenuItemFragment extends Fragment {
     private List<MenuItem> menuItemsList = new ArrayList<>();
+    private List<MenuItem> filteredMenuItemsList = new ArrayList<>();
     private MyListAdapter listAdapter;
     private RemoteMenuDataRetriever menuDataRetriever;
     private DietaryPreferenceStore dietaryPreferenceStore;
@@ -53,10 +54,7 @@ public class MenuItemFragment extends Fragment {
     private Switch allergySwitch;
     private Switch prefSwitch;
     private ListView itemListView;
-    private boolean allOn;
-    private boolean prefOn;
     private BroadcastReceiver broadcastReceiver;
-    private List<MenuItem> allergyList;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,8 +70,6 @@ public class MenuItemFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        prefSwitch.setChecked(!prefSwitch.isChecked());
-        prefSwitch.setChecked(!prefSwitch.isChecked());
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(MainActivity.PREFERENCES_TOGGLE_ACTION);
@@ -81,12 +77,12 @@ public class MenuItemFragment extends Fragment {
         broadcastReceiver= new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e("INTENT", "" + intent.getAction());
                 if (intent.getAction().equals(MainActivity.PREFERENCES_TOGGLE_ACTION)) {
-                    prefOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                    boolean prefOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
                     filterPreferences(prefOn);
                 } else if (intent.getAction().equals(MainActivity.ALLERGY_TOGGLE_ACTION)) {
-                    allOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                    boolean allOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                    filterAllergies(allOn);
                 }
             }
         };
@@ -112,6 +108,7 @@ public class MenuItemFragment extends Fragment {
         itemListView.setAdapter(listAdapter);
 
         menuDataRetriever.requestMenuItemsList(restaurantId, menuItemsList, listAdapter, MenuItem.getCreator(dietaryPreferenceStore));
+        filterAllergies(((MainActivity) getActivity()).allergySwitch.isChecked());
 
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,10 +129,9 @@ public class MenuItemFragment extends Fragment {
     }
 
     private void filterPreferences(boolean checked) {
-        Log.e("FILTERING PREFERENCES", Boolean.toString(checked));
-        for (int i = 0; i < menuItemsList.size(); i++) {
+        for (int i = 0; i < filteredMenuItemsList.size(); i++) {
             if (checked) {
-                List<DietaryPreference> itemPrefs = menuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
+                List<DietaryPreference> itemPrefs = filteredMenuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
                 for (DietaryPreference pref : itemPrefs) {
                     if (preferences.contains(pref)) {
                         itemListView.getChildAt(i).setBackgroundResource(R.color.oldGold);
@@ -148,19 +144,23 @@ public class MenuItemFragment extends Fragment {
     }
 
     private void filterAllergies(boolean checked) {
-        List<MenuItem> withAllergies = menuItemsList;
         Log.e("FILTERING ALLERGIES", Boolean.toString(checked));
-        for (int i = 0; i < menuItemsList.size(); i++) {
+        filteredMenuItemsList.clear();
+        for (MenuItem m: menuItemsList) {
             if (checked) {
-                List<DietaryPreference> itemAllergies = menuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.ALLERGY);
+                List<DietaryPreference> itemAllergies = m.getDietaryPreferences(DietaryPreference.Type.ALLERGY);
+                boolean clean = true;
                 for (DietaryPreference pref : itemAllergies) {
-                    if (allergies.contains(pref)) {
-                        menuItemsList.remove(pref);
-                        listAdapter.notifyDataSetChanged();
-                    }
+                    clean = clean && !allergies.contains(pref);
                 }
+                if (clean) {
+                    filteredMenuItemsList.add(m);
+                }
+            } else {
+                filteredMenuItemsList.add(m);
             }
         }
+        listAdapter.notifyDataSetChanged();
     }
 
 
@@ -177,7 +177,8 @@ public class MenuItemFragment extends Fragment {
 
     private class MyListAdapter extends ArrayAdapter<MenuItem> {
 
-        MyListAdapter() { super(getActivity(), R.layout.item_row, menuItemsList); }
+        MyListAdapter() { super(getActivity(), R.layout.item_row, filteredMenuItemsList);
+        }
 
         @Override
         public View getView(int position, final View convertView, ViewGroup parent) {
@@ -185,7 +186,7 @@ public class MenuItemFragment extends Fragment {
             if (itemView == null) {
                 itemView = inflater.inflate(R.layout.item_row, parent, false);
             }
-            MenuItem thisItem = menuItemsList.get(position);
+            MenuItem thisItem = filteredMenuItemsList.get(position);
 
             TextView nameText = itemView.findViewById(R.id.itemName);
             nameText.setText(thisItem.getName());

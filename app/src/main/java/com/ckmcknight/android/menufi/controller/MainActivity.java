@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_menu) NavigationView mNav;
     ActionBarDrawerToggle mActionBarDrawerToggle;
-    private Switch allergySwitch;
-    private Switch preferencesSwitch;
+    public Switch allergySwitch;
+    public Switch preferencesSwitch;
     public static final String ALLERGY_TOGGLE_ACTION = "ALLERGY_TOGGLE_ACTION";
     public static final String PREFERENCES_TOGGLE_ACTION = "PREFERENCES_TOGGLE_ACTION";
     public static final String BROADCAST_STATUS_CHECKED = "BROADCAST_STATUS_CHECKED";
