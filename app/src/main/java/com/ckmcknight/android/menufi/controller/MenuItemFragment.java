@@ -2,10 +2,16 @@ package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -20,6 +26,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.R2;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
@@ -28,6 +35,7 @@ import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
 
 import org.json.JSONArray;
 
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,8 +49,14 @@ public class MenuItemFragment extends Fragment {
     private LayoutInflater inflater;
     private int restaurantId;
     private List<DietaryPreference> allergies;
+    private List<DietaryPreference> preferences;
     private Switch allergySwitch;
+    private Switch prefSwitch;
     private ListView itemListView;
+    private boolean allOn;
+    private boolean prefOn;
+    private BroadcastReceiver broadcastReceiver;
+    private List<MenuItem> allergyList;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,9 +72,25 @@ public class MenuItemFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        allergySwitch.toggle();
-        allergySwitch.toggle();
-        //filterAllergy(allergySwitch.isChecked());
+        prefSwitch.setChecked(!prefSwitch.isChecked());
+        prefSwitch.setChecked(!prefSwitch.isChecked());
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MainActivity.PREFERENCES_TOGGLE_ACTION);
+        filter.addAction(MainActivity.ALLERGY_TOGGLE_ACTION);
+        broadcastReceiver= new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e("INTENT", "" + intent.getAction());
+                if (intent.getAction().equals(MainActivity.PREFERENCES_TOGGLE_ACTION)) {
+                    prefOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                    filterPreferences(prefOn);
+                } else if (intent.getAction().equals(MainActivity.ALLERGY_TOGGLE_ACTION)) {
+                    allOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                }
+            }
+        };
+        this.getActivity().registerReceiver(broadcastReceiver,filter);
     }
 
     @Override
@@ -71,7 +101,9 @@ public class MenuItemFragment extends Fragment {
         userSharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
         allergySwitch = getActivity().findViewById(R.id.allergy_filter);
+        prefSwitch = getActivity().findViewById(R.id.preferences_filter);
         allergies = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.ALLERGY);
+        preferences = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.PREFERENCE);
 
         //mockPopulateMenuItemList();
 
@@ -79,11 +111,7 @@ public class MenuItemFragment extends Fragment {
         listAdapter = new MyListAdapter();
         itemListView.setAdapter(listAdapter);
 
-
-
-
         menuDataRetriever.requestMenuItemsList(restaurantId, menuItemsList, listAdapter, MenuItem.getCreator(dietaryPreferenceStore));
-
 
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -103,18 +131,34 @@ public class MenuItemFragment extends Fragment {
        // menuItemsList.clear();
     }
 
-    private void filterAllergy(boolean checked) {
+    private void filterPreferences(boolean checked) {
+        Log.e("FILTERING PREFERENCES", Boolean.toString(checked));
+        for (int i = 0; i < menuItemsList.size(); i++) {
+            if (checked) {
+                List<DietaryPreference> itemPrefs = menuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
+                for (DietaryPreference pref : itemPrefs) {
+                    if (preferences.contains(pref)) {
+                        itemListView.getChildAt(i).setBackgroundResource(R.color.oldGold);
+                    }
+                }
+            } else {
+                itemListView.getChildAt(i).setBackgroundResource(R.color.white);
+            }
+        }
+    }
+
+    private void filterAllergies(boolean checked) {
+        List<MenuItem> withAllergies = menuItemsList;
         Log.e("FILTERING ALLERGIES", Boolean.toString(checked));
         for (int i = 0; i < menuItemsList.size(); i++) {
             if (checked) {
                 List<DietaryPreference> itemAllergies = menuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.ALLERGY);
                 for (DietaryPreference pref : itemAllergies) {
                     if (allergies.contains(pref)) {
-                        itemListView.getChildAt(i).setBackgroundResource(R.color.oldGold);
+                        menuItemsList.remove(pref);
+                        listAdapter.notifyDataSetChanged();
                     }
                 }
-            } else {
-                itemListView.getChildAt(i).setBackgroundResource(R.color.white);
             }
         }
     }
@@ -141,7 +185,6 @@ public class MenuItemFragment extends Fragment {
             if (itemView == null) {
                 itemView = inflater.inflate(R.layout.item_row, parent, false);
             }
-
             MenuItem thisItem = menuItemsList.get(position);
 
             TextView nameText = itemView.findViewById(R.id.itemName);
@@ -156,7 +199,8 @@ public class MenuItemFragment extends Fragment {
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
             ratingsText.setText(String.valueOf(thisItem.getRatings()));
 
-
+            prefSwitch.setChecked(!prefSwitch.isChecked());
+            prefSwitch.setChecked(!prefSwitch.isChecked());
 
             return itemView;
         }
