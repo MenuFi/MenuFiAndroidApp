@@ -51,8 +51,6 @@ public class MenuItemFragment extends Fragment {
     private int restaurantId;
     private List<DietaryPreference> allergies;
     private List<DietaryPreference> preferences;
-    private Switch allergySwitch;
-    private Switch prefSwitch;
     private ListView itemListView;
     private BroadcastReceiver broadcastReceiver;
 
@@ -70,23 +68,7 @@ public class MenuItemFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MainActivity.PREFERENCES_TOGGLE_ACTION);
-        filter.addAction(MainActivity.ALLERGY_TOGGLE_ACTION);
-        broadcastReceiver= new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(MainActivity.PREFERENCES_TOGGLE_ACTION)) {
-                    boolean prefOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
-                    filterPreferences(prefOn);
-                } else if (intent.getAction().equals(MainActivity.ALLERGY_TOGGLE_ACTION)) {
-                    boolean allOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
-                    filterAllergies(allOn);
-                }
-            }
-        };
-        this.getActivity().registerReceiver(broadcastReceiver,filter);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -96,8 +78,6 @@ public class MenuItemFragment extends Fragment {
         dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
         userSharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
-        allergySwitch = getActivity().findViewById(R.id.allergy_filter);
-        prefSwitch = getActivity().findViewById(R.id.preferences_filter);
         allergies = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.ALLERGY);
         preferences = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.PREFERENCE);
 
@@ -108,7 +88,25 @@ public class MenuItemFragment extends Fragment {
         itemListView.setAdapter(listAdapter);
 
         menuDataRetriever.requestMenuItemsList(restaurantId, menuItemsList, listAdapter, MenuItem.getCreator(dietaryPreferenceStore));
-        filterAllergies(((MainActivity) getActivity()).allergySwitch.isChecked());
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MainActivity.PREFERENCES_TOGGLE_ACTION);
+        filter.addAction(MainActivity.ALLERGY_TOGGLE_ACTION);
+
+        broadcastReceiver= new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(MainActivity.PREFERENCES_TOGGLE_ACTION)) {
+                    boolean prefOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                    filterPreferences(prefOn);
+                } else if (intent.getAction().equals(MainActivity.ALLERGY_TOGGLE_ACTION)) {
+                    boolean allOn = intent.getExtras().getBoolean(MainActivity.BROADCAST_STATUS_CHECKED);
+                    //filterAllergies(allOn);
+                    listAdapter.notifyDataSetChanged(allOn);
+                }
+            }
+        };
+        this.getActivity().registerReceiver(broadcastReceiver,filter);
 
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -160,7 +158,6 @@ public class MenuItemFragment extends Fragment {
                 filteredMenuItemsList.add(m);
             }
         }
-        listAdapter.notifyDataSetChanged();
     }
 
 
@@ -178,6 +175,18 @@ public class MenuItemFragment extends Fragment {
     private class MyListAdapter extends ArrayAdapter<MenuItem> {
 
         MyListAdapter() { super(getActivity(), R.layout.item_row, filteredMenuItemsList);
+        }
+
+        public void notifyDataSetChanged(boolean allergies) {
+            filterAllergies(allergies);
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            Log.e("TEST", "Notifyiung data set changed");
+            filterAllergies(((MainActivity) getActivity()).allergySwitch.isChecked());
+            super.notifyDataSetChanged();
         }
 
         @Override
@@ -199,9 +208,6 @@ public class MenuItemFragment extends Fragment {
 
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
             ratingsText.setText(String.valueOf(thisItem.getRatings()));
-
-            prefSwitch.setChecked(!prefSwitch.isChecked());
-            prefSwitch.setChecked(!prefSwitch.isChecked());
 
             return itemView;
         }
