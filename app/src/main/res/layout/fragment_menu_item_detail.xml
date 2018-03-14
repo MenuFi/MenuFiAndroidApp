@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context="com.ckmcknight.android.menufi.controller.MenuItemDetailFragment">
 
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="61dp"
+        android:numStars="5"
+        android:stepSize=".5"
+        android:progressTint="@color/colorPrimary"/>
+
     <TextView
         android:id="@+id/foodName"
         android:layout_width="match_parent"
@@ -27,7 +39,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/foodName"
         android:layout_marginTop="66dp"
-        android:gravity="center"
+        android:gravity="start"
         android:text="Ingredients:"
         android:textAlignment="viewStart"
         android:textSize="30sp" />
@@ -40,8 +52,20 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/foodIngredients"
         android:layout_marginTop="32dp"
-        android:gravity="center"
+        android:gravity="start"
         android:text="Calories:"
+        android:textAlignment="viewStart"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/rateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ratingBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="start"
+        android:text="Rate this Item!"
         android:textAlignment="viewStart"
         android:textSize="30sp" />
 
