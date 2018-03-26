@@ -11,13 +11,13 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBottom="@+id/rateButton"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="61dp"
+        android:layout_marginBottom="55dp"
         android:numStars="5"
-        android:stepSize=".5"
-        android:progressTint="@color/colorPrimary"/>
+        android:progressTint="@color/colorPrimary"
+        android:stepSize=".5" />
 
     <TextView
         android:id="@+id/foodName"
@@ -63,10 +63,23 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/ratingBar"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="14dp"
         android:gravity="start"
-        android:text="Rate this Item!"
+        android:text="Rate"
         android:textAlignment="viewStart"
         android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/rateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:gravity="start"
+        android:text="Submit"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
 
 </RelativeLayout>

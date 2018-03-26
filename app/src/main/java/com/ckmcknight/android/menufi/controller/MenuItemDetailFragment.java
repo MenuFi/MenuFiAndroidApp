@@ -2,15 +2,21 @@ package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ckmcknight.android.menufi.R;
 
 public class MenuItemDetailFragment extends Fragment {
+    private RatingBar ratings;
+    private Button rateButton;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +40,24 @@ public class MenuItemDetailFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         text1.setText(bundle.getString("name"));
-        text2.setText("Calories: " + Integer.toString(bundle.getInt("cal")));
+       // text2.setText("Calories: " + Integer.toString(bundle.getInt("cal")));
+
+        ratings = getView().findViewById(R.id.ratingBar);
+        ratings.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            }
+        });
+
+        rateButton = getView().findViewById(R.id.rateButton);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float rate = ratings.getRating();
+                Toast.makeText(getActivity(), rate + " Star Rating Submitted", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }
 
