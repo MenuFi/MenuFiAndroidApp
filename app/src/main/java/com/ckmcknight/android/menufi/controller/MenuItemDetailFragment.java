@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
@@ -24,6 +23,7 @@ import java.util.logging.Logger;
 public class MenuItemDetailFragment extends Fragment {
     private RatingBar ratings;
     private Button rateButton;
+    private TextView avgRatingTextView;
     private Logger logger = Logger.getLogger("MenuItemDetailFragment");
     private RemoteMenuDataRetriever dataRetriever;
     private int menuItemId;
@@ -39,6 +39,8 @@ public class MenuItemDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        dataRetriever.requestPersonalMenuItemRating(getPersonalUserRatingListener, menuItemId);
+        dataRetriever.requestAverageMenuItemRating(getAverageUserRatingListener, menuItemId);
     }
 
     @Override
@@ -49,13 +51,12 @@ public class MenuItemDetailFragment extends Fragment {
 
         TextView text1 = getView().findViewById(R.id.foodName);
         TextView text2 = getView().findViewById(R.id.foodCalories);
+        avgRatingTextView = getView().findViewById(R.id.avgStarRating);
         Bundle bundle = this.getArguments();
 
         text1.setText(bundle.getString("name"));
         menuItemId = bundle.getInt("id");
        // text2.setText("Calories: " + Integer.toString(bundle.getInt("cal")));
-
-        dataRetriever.requestMenuItemRating(getUserRatingListener, menuItemId);
 
         ratings = getView().findViewById(R.id.ratingBar);
         ratings.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -76,7 +77,7 @@ public class MenuItemDetailFragment extends Fragment {
 
     }
 
-    private Response.Listener<JSONObject> getUserRatingListener = new Response.Listener<JSONObject>() {
+    private Response.Listener<JSONObject> getPersonalUserRatingListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
             try {
@@ -84,26 +85,25 @@ public class MenuItemDetailFragment extends Fragment {
                 float rating = (float) data.getDouble("rating");
                 ratings.setRating(rating);
             } catch (JSONException e) {
-                logger.info("Failed to parse response after getting menu item rating");
+                logger.info("Failed to parse response after getting personal menu item rating");
             }
         }
     };
 
-    private Response.Listener<JSONObject> sendUserRatingListener = new Response.Listener<JSONObject>() {
+    private Response.Listener<JSONObject> getAverageUserRatingListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
+            try {
+                float rating = (float) response.getDouble("data");
+                String ratingText = String.format("Rating: %.1f", rating);
+                avgRatingTextView.setText(ratingText);
+            } catch (JSONException e) {
+                logger.info("Failed to parse response after getting average menu item rating");
+                logger.info(e.getMessage());
+            }
 
         }
     };
-
-    private Response.ErrorListener sendUserRatingErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            logger.info("reveiving a failed");
-        }
-    };
-
-
 
 }
 

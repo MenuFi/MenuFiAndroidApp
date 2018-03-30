@@ -7,7 +7,8 @@ public class RemoteUrls {
     public static String RESTAURANTS_EXT = "/restaurants";
     public static String MENU_ITEMS_FORMAT_EXT = RESTAURANTS_EXT + "/%s/items";
     public static String PREFERENCES_EXT = "/preferences";
-    public static String MENU_ITEM_RATING_FORMAT_EXT = "/items/%s/rating/0";
+    public static String PERSONAL_MENU_ITEM_RATING_FORMAT_EXT = "/items/%s/rating/0";
+    public static String AVERAGE_MENU_ITEM_RATING_FORMAT_EXT = "/items/%s/rating";
 
 
     public static String JSON_DATA_KEY = "data";

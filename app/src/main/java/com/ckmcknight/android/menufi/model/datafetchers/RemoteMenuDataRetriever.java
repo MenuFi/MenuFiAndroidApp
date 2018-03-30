@@ -7,10 +7,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.JsonCreator;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
@@ -60,9 +57,15 @@ public class RemoteMenuDataRetriever {
         makeJsonObjectRequest(url, listener, errorListener);
     }
 
-    public void requestMenuItemRating(Response.Listener<JSONObject> listener, int menuItemId) {
-        Response.ErrorListener errorListener = errorListenerCreator("Failed to retrieve menu item rating");
-        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
+    public void requestPersonalMenuItemRating(Response.Listener<JSONObject> listener, int menuItemId) {
+        Response.ErrorListener errorListener = errorListenerCreator("Failed to retrieve personal menu item rating");
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.PERSONAL_MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
+        makeJsonObjectRequest(url, listener, errorListener);
+    }
+
+    public void requestAverageMenuItemRating(Response.Listener<JSONObject> listener, int menuItemId) {
+        Response.ErrorListener errorListener = errorListenerCreator("Failed to retrieve average menu item rating");
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.AVERAGE_MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
         makeJsonObjectRequest(url, listener, errorListener);
     }
 
@@ -71,7 +74,7 @@ public class RemoteMenuDataRetriever {
         JSONObject request = new JSONObject(requestMap);
         Response.ErrorListener errorListener = errorListenerCreator("Failed to retrieve menu item rating");
         Response.Listener<JSONObject> putListner = putListenerCreator("Reveived putMenuItemRating response");
-        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.PERSONAL_MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
         makeJsonPutRequest(url, request, putListner, errorListener);
     }
 
