@@ -25,14 +25,12 @@ public class UserSharedPreferences {
 
     private SessionToken sessionToken = new SessionToken("");
     private SharedPreferences sharedPreferences;
-    private DietaryPreferenceStore dietaryPreferenceStore;
     private Map<DietaryPreference.Type, List<DietaryPreference>> dietaryPreferenceMap;
     private boolean loggedIn;
 
     @Inject
-    UserSharedPreferences(Context context, DietaryPreferenceStore dietaryPreferenceStore) {
+    UserSharedPreferences(Context context) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_KEY, Context.MODE_PRIVATE);
-        this.dietaryPreferenceStore = dietaryPreferenceStore;
         loggedIn = false;
     }
 
@@ -68,13 +66,13 @@ public class UserSharedPreferences {
         for (DietaryPreference.Type type: DietaryPreference.Type.values()) {
             dietaryPreferenceMap.put(type, new ArrayList<DietaryPreference>());
         }
-        for (String s : dietaryPreferenceKey.split(",")) {
+        /* for (String s : dietaryPreferenceKey.split(",")) {
             if (!"".equals(s)) {
                 int id = Integer.parseInt(s);
                 DietaryPreference p = dietaryPreferenceStore.getDietaryPreference(id);
                 dietaryPreferenceMap.get(p.getType()).add(p);
             }
-        }
+        } */
 
     }
 

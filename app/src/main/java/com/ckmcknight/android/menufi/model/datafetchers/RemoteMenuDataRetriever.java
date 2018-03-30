@@ -3,33 +3,41 @@ package com.ckmcknight.android.menufi.model.datafetchers;
 
 import android.widget.BaseAdapter;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.JsonCreator;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.containers.Restaurant;
+import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
+import com.google.common.collect.ImmutableMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
 public class RemoteMenuDataRetriever {
     private NetworkController controller;
+    private UserSharedPreferences preferences;
     private Logger logger = Logger.getLogger("RemoteMenuDataRetriever");
 
     @Inject
-    RemoteMenuDataRetriever(NetworkController controller) {
+    RemoteMenuDataRetriever(NetworkController controller, UserSharedPreferences preferences) {
         this.controller = controller;
+        this.preferences = preferences;
     }
 
     public void requestNearbyRestaurantList(Collection<Restaurant> restaurantList, BaseAdapter adapter, JsonCreator<Restaurant> creator) {
@@ -52,8 +60,44 @@ public class RemoteMenuDataRetriever {
         makeJsonObjectRequest(url, listener, errorListener);
     }
 
+    public void requestMenuItemRating(Response.Listener<JSONObject> listener, int menuItemId) {
+        Response.ErrorListener errorListener = errorListenerCreator("Failed to retrieve menu item rating");
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
+        makeJsonObjectRequest(url, listener, errorListener);
+    }
+
+    public void putMenuItemRating(int menuItemId, double rating) {
+        Map<String, String> requestMap = ImmutableMap.<String, String>of("rating",Double.toString(rating));
+        JSONObject request = new JSONObject(requestMap);
+        Response.ErrorListener errorListener = errorListenerCreator("Failed to retrieve menu item rating");
+        Response.Listener<JSONObject> putListner = putListenerCreator("Reveived putMenuItemRating response");
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.MENU_ITEM_RATING_FORMAT_EXT, menuItemId);
+        makeJsonPutRequest(url, request, putListner, errorListener);
+    }
+
     public void makeJsonObjectRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, errorListener);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "MenuFi " + preferences.getSessionToken().getTokenValue());
+                return headers;
+            }
+        };
+        logger.info("Token: " + preferences.getSessionToken().getTokenValue());
+        controller.addToRequestQueue(jsObjRequest);
+    }
+
+    public void makeJsonPutRequest(String url, JSONObject request, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.PUT, url, request, listener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "MenuFi " + preferences.getSessionToken().getTokenValue());
+                return headers;
+            }
+        };
+        logger.info("Token: " + preferences.getSessionToken().getTokenValue());
         controller.addToRequestQueue(jsObjRequest);
     }
 
@@ -72,6 +116,15 @@ public class RemoteMenuDataRetriever {
                     logger.severe("Failed to convert read from JSON array in listener creator");
                 }
                 adapter.notifyDataSetChanged();
+            }
+        };
+    }
+
+    private Response.Listener<JSONObject> putListenerCreator(final String logMessage) {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                logger.info(logMessage);
             }
         };
     }

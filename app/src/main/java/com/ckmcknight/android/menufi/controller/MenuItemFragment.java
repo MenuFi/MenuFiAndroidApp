@@ -115,6 +115,7 @@ public class MenuItemFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("name", menuItemsList.get(position).getName());
                 bundle.putInt("cal", menuItemsList.get(position).getCalories());
+                bundle.putInt("id", menuItemsList.get(position).getItemId());
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
@@ -162,10 +163,10 @@ public class MenuItemFragment extends Fragment {
 
 
     private void mockPopulateMenuItemList() {
-        MenuItem burger = new MenuItem("Burger", "Half pound angus beef", 6.99f, 4.1f, 1200, new ArrayList<DietaryPreference>());
+        MenuItem burger = new MenuItem(1, 0, "Burger", "Half pound angus beef", 6.99f, 4.1f, 1200, new ArrayList<DietaryPreference>());
         burger.setCalories(350);
-        MenuItem bbqBurger = new MenuItem("BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f, 1400, new ArrayList<DietaryPreference>());
-        MenuItem fries = new MenuItem("Fries", "Crisp Fries", 2.79f, 4f, 8000, new ArrayList<DietaryPreference>());
+        MenuItem bbqBurger = new MenuItem(1, 1,"BBQ Burger", "Sweet and Tangy BBQ", 7.99f, 4.5f, 1400, new ArrayList<DietaryPreference>());
+        MenuItem fries = new MenuItem(1,2,"Fries", "Crisp Fries", 2.79f, 4f, 8000, new ArrayList<DietaryPreference>());
         menuItemsList.clear();
         menuItemsList.add(burger);
         menuItemsList.add(bbqBurger);

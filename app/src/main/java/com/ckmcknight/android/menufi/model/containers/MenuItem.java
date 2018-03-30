@@ -25,7 +25,9 @@ public class MenuItem {
     private List<DietaryPreference> dietaryPreferences;
 
 
-    public MenuItem(String name, String description, float price, float ratings, int calories, List<DietaryPreference> dietaryPreferences) {
+    public MenuItem(int restaurantId, int  itemId, String name, String description, float price, float ratings, int calories, List<DietaryPreference> dietaryPreferences) {
+        this.restaurantId = restaurantId;
+        this.itemId = itemId;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -52,6 +54,14 @@ public class MenuItem {
 
     public int getCalories() { return calories; }
 
+    public int getItemId() {
+        return itemId;
+    }
+
+    public int getRestaurantId() {
+        return restaurantId;
+    }
+
     public void setCalories(int cal) { calories = cal; }
 
     public List<DietaryPreference> getDietaryPreferences(DietaryPreference.Type type) {
@@ -66,6 +76,8 @@ public class MenuItem {
 
     public static MenuItem from(JSONObject jsonObject, DietaryPreferenceStore store) {
         try {
+            int restId = jsonObject.getInt("restaurantId");
+            int menuId = jsonObject.getInt("menuItemId");
             String name = jsonObject.getString("name");
             String description =jsonObject.getString("description");
             float price = (float)(jsonObject.getDouble("price"));
@@ -73,7 +85,7 @@ public class MenuItem {
             int calories = (jsonObject.getInt("calories"));
             List<DietaryPreference> dietaryPreferences = store.getDietaryPreferencesList(
                     jsonObject.getJSONArray("dietaryPreferences"));
-            return new MenuItem(name, description,price,rating, calories, dietaryPreferences);
+            return new MenuItem(restId, menuId, name, description,price,rating, calories, dietaryPreferences);
         } catch(JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
         }
