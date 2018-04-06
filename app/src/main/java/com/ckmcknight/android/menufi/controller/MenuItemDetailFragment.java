@@ -27,6 +27,7 @@ public class MenuItemDetailFragment extends Fragment {
     private Logger logger = Logger.getLogger("MenuItemDetailFragment");
     private RemoteMenuDataRetriever dataRetriever;
     private int menuItemId;
+    private int restaurantId;
 
 
     @Override
@@ -55,8 +56,12 @@ public class MenuItemDetailFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         text1.setText(bundle.getString("name"));
-        menuItemId = bundle.getInt("id");
+        menuItemId = bundle.getInt("menuItemId");
+        restaurantId = bundle.getInt("restaurantId");
+
        // text2.setText("Calories: " + Integer.toString(bundle.getInt("cal")));
+
+        dataRetriever.registerMenuItemClick(menuItemId, restaurantId);
 
         ratings = getView().findViewById(R.id.ratingBar);
         ratings.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

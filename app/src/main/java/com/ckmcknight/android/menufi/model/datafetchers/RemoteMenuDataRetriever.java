@@ -78,6 +78,16 @@ public class RemoteMenuDataRetriever {
         makeJsonPutRequest(url, request, putListner, errorListener);
     }
 
+    public void registerMenuItemClick(int menuItemId, int restaurantId) {
+        Map<String, String> requestMap = ImmutableMap.<String, String>of("menuItemId",Integer.toString(menuItemId), "restaurantId", Integer.toString(restaurantId));
+        JSONObject request = new JSONObject(requestMap);
+        Response.ErrorListener errorListener = errorListenerCreator("Failed to register menu click");
+        Response.Listener<JSONObject> putListner = putListenerCreator("Reveived putMenuItemClick response");
+        String url = RemoteUrls.BASE_SERVER_URL + String.format(RemoteUrls.REGISTER_MENU_ITEM_CLICK_FORMAT_EXT, restaurantId, menuItemId);
+        makeJsonPostRequest(url, request, putListner, errorListener);
+
+    }
+
     public void makeJsonObjectRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, listener, errorListener) {
             @Override
@@ -93,6 +103,19 @@ public class RemoteMenuDataRetriever {
 
     public void makeJsonPutRequest(String url, JSONObject request, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.PUT, url, request, listener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "MenuFi " + preferences.getSessionToken().getTokenValue());
+                return headers;
+            }
+        };
+        logger.info("Token: " + preferences.getSessionToken().getTokenValue());
+        controller.addToRequestQueue(jsObjRequest);
+    }
+
+    public void makeJsonPostRequest(String url, JSONObject request, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, request, listener, errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();

@@ -115,7 +115,8 @@ public class MenuItemFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("name", menuItemsList.get(position).getName());
                 bundle.putInt("cal", menuItemsList.get(position).getCalories());
-                bundle.putInt("id", menuItemsList.get(position).getItemId());
+                bundle.putInt("menuItemId", menuItemsList.get(position).getItemId());
+                bundle.putInt("restaurantId", menuItemsList.get(position).getRestaurantId());
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()

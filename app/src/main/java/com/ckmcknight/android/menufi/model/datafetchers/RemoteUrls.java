@@ -9,6 +9,7 @@ public class RemoteUrls {
     public static String PREFERENCES_EXT = "/preferences";
     public static String PERSONAL_MENU_ITEM_RATING_FORMAT_EXT = "/items/%s/rating/0";
     public static String AVERAGE_MENU_ITEM_RATING_FORMAT_EXT = "/items/%s/rating";
+    public static String REGISTER_MENU_ITEM_CLICK_FORMAT_EXT = "/restaurants/%s/items/%s/clicks";
 
 
     public static String JSON_DATA_KEY = "data";
