@@ -73,6 +73,7 @@ public class EditAllergiesFragment extends Fragment {
         userSharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
         final Collection<DietaryPreference> availibleAllergies = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.ALLERGY);
+        mAllergies.clear();
         mAllergies.addAll(availibleAllergies);
         final ListView allergiesListView = getView().findViewById(R.id.check_list);
         //preferencesListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

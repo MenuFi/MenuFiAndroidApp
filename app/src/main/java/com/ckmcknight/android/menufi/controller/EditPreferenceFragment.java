@@ -78,6 +78,7 @@ public class EditPreferenceFragment extends Fragment{
         userSharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
         final Collection<DietaryPreference> availiblePreferences = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
+        mPreferences.clear();
         mPreferences.addAll(availiblePreferences);
         final ListView preferencesListView = getView().findViewById(R.id.check_list);
         //preferencesListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
