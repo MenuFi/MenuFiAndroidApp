@@ -21,9 +21,11 @@ import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
+import com.google.common.base.Joiner;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +34,9 @@ public class ProfileFragment extends Fragment {
 
     @BindView(R.id.edit_preferences_button) Button editPrefButton;
     @BindView(R.id.edit_allergies_button) Button editAllergiesButton;
+    @BindView(R.id.profile_name_textview) TextView profileNameTextView;
+    @BindView(R.id.profile_allergies_textview) TextView profileAllergiesTextView;
+    @BindView(R.id.profile_preferences_textview) TextView profilePreferencesTextView;
     private DietaryPreferenceStore dietaryPreferenceStore;
     private RemoteMenuDataRetriever preferenceDataRetriever;
 
@@ -75,15 +80,10 @@ public class ProfileFragment extends Fragment {
         preferenceDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
         dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
 
-        TextView text1 = getView().findViewById(R.id.profile_preferences_textview);
-
-        /**
-        Collection<DietaryPreference> collection = dietaryPreferenceStore.getDietaryPreferences();
-        for (Iterator<DietaryPreference> iterator = collection.iterator(); iterator.hasNext();) {
-            String text = text1.getText() + iterator.next().getName() + ", ";
-            text1.setText(text);
-        }
-         */
+        Collection<DietaryPreference> allergies = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.ALLERGY);
+        Collection<DietaryPreference> preferences = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
+        profileAllergiesTextView.setText("Allergies: " + Joiner.on(", ").join(allergies));
+        profilePreferencesTextView.setText("Preferences: " + Joiner.on(", ").join(preferences));
     }
 
     @Override

@@ -23,9 +23,10 @@ public class MenuItem {
     private int calories;
     private String pictureUri;
     private List<DietaryPreference> dietaryPreferences;
+    private List<String> ingredientsList;
 
 
-    public MenuItem(int restaurantId, int  itemId, String name, String description, float price, float ratings, int calories, List<DietaryPreference> dietaryPreferences) {
+    public MenuItem(int restaurantId, int  itemId, String name, String description, float price, float ratings, int calories, List<DietaryPreference> dietaryPreferences, List<String> ingredientsList, String pictureUri) {
         this.restaurantId = restaurantId;
         this.itemId = itemId;
         this.name = name;
@@ -34,6 +35,8 @@ public class MenuItem {
         this.ratings = ratings;
         this.calories = calories;
         this.dietaryPreferences = dietaryPreferences;
+        this.ingredientsList = ingredientsList;
+        this.pictureUri = pictureUri;
     }
 
     public String getName() {
@@ -62,7 +65,13 @@ public class MenuItem {
         return restaurantId;
     }
 
-    public void setCalories(int cal) { calories = cal; }
+    public List<String> getIngredientsList() {
+        return ingredientsList;
+    }
+
+    public String getPictureUri() {
+        return pictureUri;
+    }
 
     public List<DietaryPreference> getDietaryPreferences(DietaryPreference.Type type) {
         List<DietaryPreference> typedPreferences = new ArrayList<>();
@@ -85,11 +94,25 @@ public class MenuItem {
             int calories = (jsonObject.getInt("calories"));
             List<DietaryPreference> dietaryPreferences = store.getDietaryPreferencesList(
                     jsonObject.getJSONArray("dietaryPreferences"));
-            return new MenuItem(restId, menuId, name, description,price,rating, calories, dietaryPreferences);
+            List<String> ingredientsList = parseJsonStringArray(jsonObject.getJSONArray("ingredients"));
+            String pictureUri = jsonObject.getString("pictureUri");
+            return new MenuItem(restId, menuId, name, description,price,rating, calories, dietaryPreferences, ingredientsList, pictureUri);
         } catch(JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
         }
         return null;
+    }
+
+    private static List<String> parseJsonStringArray(JSONArray array) {
+        List<String> parsedArray = new ArrayList<>();
+        try {
+            for (int i =0; i < array.length(); i++) {
+                parsedArray.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "Error parsing ingredients list from JSON Array");
+        }
+        return parsedArray;
     }
 
     public static List<MenuItem> menuListFrom(JSONArray jsonArray, DietaryPreferenceStore store) {

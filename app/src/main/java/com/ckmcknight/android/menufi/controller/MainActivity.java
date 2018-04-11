@@ -15,6 +15,8 @@ import android.widget.Switch;
 
 import com.ckmcknight.android.menufi.R;
 
+import java.util.logging.Logger;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_menu) NavigationView mNav;
     ActionBarDrawerToggle mActionBarDrawerToggle;
+    public static Logger logger = Logger.getLogger("MainActivity");
     public Switch allergySwitch;
     public Switch preferencesSwitch;
     public static final String ALLERGY_TOGGLE_ACTION = "ALLERGY_TOGGLE_ACTION";
@@ -58,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
         selectFragment(mNav.getMenu().getItem(0));
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
+
+
     /** Swaps fragments in the main content view */
     private boolean selectFragment(MenuItem menuItem) {
         // Create a new fragment and specify the planet to show based on position
@@ -70,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new ProfileFragment();
                 break;
             default:
-                fragment = new Fragment();
+                logger.info("Failed to find select fragemnt. Defaulting to ProfileFragment");
+                fragment = new ProfileFragment();
                 break;
         }
         // Insert the fragment by replacing any existing fragment

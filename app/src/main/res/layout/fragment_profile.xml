@@ -49,13 +49,6 @@
             android:text="Preferences:"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/profile_reviews_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reviews: 5"
-            android:textSize="24sp" />
-
     </LinearLayout>
 
 
