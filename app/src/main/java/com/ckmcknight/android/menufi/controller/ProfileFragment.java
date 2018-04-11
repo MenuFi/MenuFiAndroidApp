@@ -21,6 +21,7 @@ import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
+import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
 import com.google.common.base.Joiner;
 
 import java.util.Collection;
@@ -37,8 +38,7 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.profile_name_textview) TextView profileNameTextView;
     @BindView(R.id.profile_allergies_textview) TextView profileAllergiesTextView;
     @BindView(R.id.profile_preferences_textview) TextView profilePreferencesTextView;
-    private DietaryPreferenceStore dietaryPreferenceStore;
-    private RemoteMenuDataRetriever preferenceDataRetriever;
+    private UserSharedPreferences userSharedPreferences;
 
 
     @Override
@@ -77,11 +77,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        preferenceDataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
-        dietaryPreferenceStore = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getDietaryPreferenceStore();
+        userSharedPreferences = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().getUserSharedPreferences();
 
-        Collection<DietaryPreference> allergies = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.ALLERGY);
-        Collection<DietaryPreference> preferences = dietaryPreferenceStore.getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
+        Collection<DietaryPreference> allergies = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.ALLERGY);
+        Collection<DietaryPreference> preferences = userSharedPreferences.getUserDietaryPreferences(DietaryPreference.Type.PREFERENCE);
         profileAllergiesTextView.setText("Allergies: " + Joiner.on(", ").join(allergies));
         profilePreferencesTextView.setText("Preferences: " + Joiner.on(", ").join(preferences));
     }
