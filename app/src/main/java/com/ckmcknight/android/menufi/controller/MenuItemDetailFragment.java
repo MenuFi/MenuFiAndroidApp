@@ -1,11 +1,15 @@
 package com.ckmcknight.android.menufi.controller;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.ckmcknight.android.menufi.MenuFiApplication;
 import com.ckmcknight.android.menufi.R;
+import com.ckmcknight.android.menufi.model.datafetchers.ImageRetriever;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 
 import org.json.JSONException;
@@ -23,11 +28,19 @@ import java.util.logging.Logger;
 public class MenuItemDetailFragment extends Fragment {
     private RatingBar ratings;
     private Button rateButton;
+    private ImageView foodImageView;
     private TextView avgRatingTextView;
+    private TextView foodNameTextView;
+    private TextView caloriesTextView;
+    private TextView ingredientsTextView;
     private Logger logger = Logger.getLogger("MenuItemDetailFragment");
     private RemoteMenuDataRetriever dataRetriever;
     private int menuItemId;
     private int restaurantId;
+    private String imageUrl;
+    private String ingredients;
+    private String foodName;
+    private int calories;
 
 
     @Override
@@ -50,16 +63,25 @@ public class MenuItemDetailFragment extends Fragment {
         super.onStart();
         dataRetriever = ((MenuFiApplication) getActivity().getApplication()).getMenuFiComponent().dataRetriever();
 
-        TextView text1 = getView().findViewById(R.id.foodName);
-        TextView text2 = getView().findViewById(R.id.foodCalories);
+        foodNameTextView = getView().findViewById(R.id.foodName);
+        caloriesTextView = getView().findViewById(R.id.foodCalories);
+        ingredientsTextView = getView().findViewById(R.id.foodIngredients);
+        foodImageView = getView().findViewById(R.id.foodImage);
         avgRatingTextView = getView().findViewById(R.id.avgStarRating);
         Bundle bundle = this.getArguments();
 
-        text1.setText(bundle.getString("name"));
+        foodName = bundle.getString("name");
         menuItemId = bundle.getInt("menuItemId");
         restaurantId = bundle.getInt("restaurantId");
+        imageUrl = bundle.getString("imageUrl");
+        calories = bundle.getInt("cal");
+        ingredients = bundle.getString("ingredients");
 
-       // text2.setText("Calories: " + Integer.toString(bundle.getInt("cal")));
+        caloriesTextView.setText("Calories: " + Integer.toString(calories));
+        ingredientsTextView.setText("Ingredients: " + ingredients);
+        foodNameTextView.setText(foodName);
+
+        new RetrieveImage().execute(imageUrl);
 
         dataRetriever.registerMenuItemClick(menuItemId, restaurantId);
 
@@ -109,6 +131,23 @@ public class MenuItemDetailFragment extends Fragment {
 
         }
     };
+
+    private class RetrieveImage extends AsyncTask<String, String, Bitmap>{
+
+        @Override
+        protected Bitmap doInBackground(String[] url) {
+            return (new ImageRetriever()).retreiveBitmapFromUrl(url[0]);
+        }
+
+        @Override
+        protected void onPostExecute (Bitmap bitmap) {
+            if (bitmap == null) {
+                logger.info("failed to load item image");
+            } else {
+                foodImageView.setImageBitmap(bitmap);
+            }
+        }
+    }
 
 }
 

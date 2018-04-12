@@ -3,7 +3,7 @@
     <color name="colorPrimary">#00263A</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
-    <color name= "white">#FFFFFF</color>
+    <color name= "white">#ffffff</color>
     <color name="allergyFilter">#FF6666</color>
-    <color name="oldGold">#F5D376</color>
+    <color name="oldGold">#f5d376</color>
 </resources>

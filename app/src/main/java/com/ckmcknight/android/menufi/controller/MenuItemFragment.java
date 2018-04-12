@@ -32,6 +32,7 @@ import com.ckmcknight.android.menufi.model.containers.MenuItem;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
 import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
+import com.google.common.base.Joiner;
 
 import org.json.JSONArray;
 
@@ -117,6 +118,8 @@ public class MenuItemFragment extends Fragment {
                 bundle.putInt("cal", menuItemsList.get(position).getCalories());
                 bundle.putInt("menuItemId", menuItemsList.get(position).getItemId());
                 bundle.putInt("restaurantId", menuItemsList.get(position).getRestaurantId());
+                bundle.putString("imageUrl", menuItemsList.get(position).getPictureUri());
+                bundle.putString("ingredients", Joiner.on(", ").join(menuItemsList.get(position).getIngredientsList()));
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
