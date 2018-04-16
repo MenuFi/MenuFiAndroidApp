@@ -201,6 +201,8 @@ public class MenuItemFragment extends Fragment {
 
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
             ratingsText.setText(String.valueOf(thisItem.getRatings()));
+            int numStars = (Math.round(thisItem.getRatings()));
+            ratingsText.setText(String.format("%0" + numStars + "d", 0).replace("0", "\u2605"));
 
             if (thisItem.getItemPopularity() > MenuItem.POPULAR_ITEM_THRESHOLD) {
                 itemView.findViewById(R.id.popularMenuItemStar).setVisibility(View.INVISIBLE);
