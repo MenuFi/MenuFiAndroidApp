@@ -200,9 +200,17 @@ public class MenuItemFragment extends Fragment {
             priceText.setText("$" + String.valueOf(thisItem.getPrice()));
 
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
-            ratingsText.setText(String.valueOf(thisItem.getRatings()));
             int numStars = (Math.round(thisItem.getRatings()));
-            ratingsText.setText(String.format("%0" + numStars + "d", 0).replace("0", "\u2605"));
+            String stars;
+            if (numStars != 0 && numStars != 5) {
+                stars = String.format("%0" + numStars + "d", 0).replace("0", "\u2605");
+                stars += String.format("%0" + (5 - numStars) + "d", 0).replace("0", "\u2606");
+            } else if (numStars == 0){
+                stars = String.format("%0" + 5 + "d", 0).replace("0", "\u2606");
+            } else {
+                stars = String.format("%0" + 5 + "d", 0).replace("0", "\u2605");
+            }
+            ratingsText.setText(stars);
 
             if (thisItem.getItemPopularity() > MenuItem.POPULAR_ITEM_THRESHOLD) {
                 itemView.findViewById(R.id.popularMenuItemStar).setVisibility(View.INVISIBLE);
