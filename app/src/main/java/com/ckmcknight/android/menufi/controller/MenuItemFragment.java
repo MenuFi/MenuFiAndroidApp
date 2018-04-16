@@ -202,6 +202,10 @@ public class MenuItemFragment extends Fragment {
             TextView ratingsText = itemView.findViewById(R.id.itemRating);
             ratingsText.setText(String.valueOf(thisItem.getRatings()));
 
+            if (thisItem.getItemPopularity() > MenuItem.POPULAR_ITEM_THRESHOLD) {
+                itemView.findViewById(R.id.popularMenuItemStar).setVisibility(View.INVISIBLE);
+            }
+
             return itemView;
         }
     }

@@ -21,12 +21,15 @@ public class MenuItem {
     private float price;
     private float ratings;
     private int calories;
+    private int itemPopularity;
     private String pictureUri;
     private List<DietaryPreference> dietaryPreferences;
     private List<String> ingredientsList;
 
+    public static final int POPULAR_ITEM_THRESHOLD = 3;
 
-    public MenuItem(int restaurantId, int  itemId, String name, String description, float price, float ratings, int calories, List<DietaryPreference> dietaryPreferences, List<String> ingredientsList, String pictureUri) {
+
+    public MenuItem(int restaurantId, int  itemId, String name, String description, float price, float ratings, int calories, List<DietaryPreference> dietaryPreferences, List<String> ingredientsList, String pictureUri, int itemPopularity) {
         this.restaurantId = restaurantId;
         this.itemId = itemId;
         this.name = name;
@@ -37,6 +40,7 @@ public class MenuItem {
         this.dietaryPreferences = dietaryPreferences;
         this.ingredientsList = ingredientsList;
         this.pictureUri = pictureUri;
+        this.itemPopularity = itemPopularity;
     }
 
     public String getName() {
@@ -63,6 +67,10 @@ public class MenuItem {
 
     public int getRestaurantId() {
         return restaurantId;
+    }
+
+    public int getItemPopularity() {
+        return itemPopularity;
     }
 
     public List<String> getIngredientsList() {
@@ -92,11 +100,12 @@ public class MenuItem {
             float price = (float)(jsonObject.getDouble("price"));
             float rating = (float)(jsonObject.getDouble("rating"));
             int calories = (jsonObject.getInt("calories"));
+            int itemPopularity = jsonObject.getInt("popularity");
             List<DietaryPreference> dietaryPreferences = store.getDietaryPreferencesList(
                     jsonObject.getJSONArray("dietaryPreferences"));
             List<String> ingredientsList = parseJsonStringArray(jsonObject.getJSONArray("ingredients"));
             String pictureUri = jsonObject.getString("pictureUri");
-            return new MenuItem(restId, menuId, name, description,price,rating, calories, dietaryPreferences, ingredientsList, pictureUri);
+            return new MenuItem(restId, menuId, name, description,price,rating, calories, dietaryPreferences, ingredientsList, pictureUri, itemPopularity);
         } catch(JSONException e) {
             Log.e(TAG, "error while parsing restaurant from jsonObject: " + e.getMessage());
         }
