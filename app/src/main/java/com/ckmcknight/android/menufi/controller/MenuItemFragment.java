@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ import com.ckmcknight.android.menufi.R;
 import com.ckmcknight.android.menufi.R2;
 import com.ckmcknight.android.menufi.model.containers.DietaryPreference;
 import com.ckmcknight.android.menufi.model.containers.MenuItem;
+import com.ckmcknight.android.menufi.model.datafetchers.ImageRetriever;
 import com.ckmcknight.android.menufi.model.datafetchers.RemoteMenuDataRetriever;
 import com.ckmcknight.android.menufi.model.datastores.DietaryPreferenceStore;
 import com.ckmcknight.android.menufi.model.datastores.UserSharedPreferences;
@@ -54,6 +58,7 @@ public class MenuItemFragment extends Fragment {
     private List<DietaryPreference> preferences;
     private ListView itemListView;
     private BroadcastReceiver broadcastReceiver;
+    private static Logger logger = Logger.getLogger("MenuItemFragment");
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,6 +195,9 @@ public class MenuItemFragment extends Fragment {
             }
             MenuItem thisItem = filteredMenuItemsList.get(position);
 
+            ImageView itemImageView = itemView.findViewById(R.id.menuItemImage);
+            getRetrieveImage(itemImageView).execute(thisItem.getPictureUri());
+
             TextView nameText = itemView.findViewById(R.id.itemName);
             nameText.setText(thisItem.getName());
 
@@ -219,4 +227,24 @@ public class MenuItemFragment extends Fragment {
             return itemView;
         }
     }
+
+
+    private static AsyncTask<String, String, Bitmap> getRetrieveImage(final ImageView view) {
+
+        return new AsyncTask<String, String, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(String[] url) {
+                return (new ImageRetriever()).retreiveBitmapFromUrl(url[0]);
+            }
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap == null) {
+                    logger.info("failed to load item image");
+                } else {
+                    view.setImageBitmap(bitmap);
+                }
+            }
+        };
+    }
+
 }
