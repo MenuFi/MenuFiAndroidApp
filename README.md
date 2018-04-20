@@ -54,8 +54,8 @@ follow the instructions on 'https://developer.android.com/studio/publish/app-sig
 run 'adb -d install path/to/your_app.apk' to install the app to your device
 
 #### ON EMULATOR
-run 'emulator -avd avd_name' to start your emulator
-run' adb install path/to/your_app.apk' to install to your emulator
+1. run 'emulator -avd avd_name' to start your emulator
+2. run 'adb install path/to/your_app.apk' to install to your emulator
 
 ### TROUBLESHOOTING
 
