@@ -1,9 +1,5 @@
 # MenuFiAndroidApp
 
-# MenuFiWebPortal
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
-
 ## Release Notes version 1.0
 
 ### NEW FEATURES
@@ -30,63 +26,37 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### PRE-REQUISITES
 
-You must have the following installed and configured (in order) before preceding:
-1. Node Package Manager (npm): https://www.npmjs.com/
-2. Angular CLI: https://github.com/angular/angular-cli
-    - Run `npm install -g @angular/cli`
+You must have the following installed before preceding:
+1. Android Studio (Optional)
+2. Gradle (bundled with Android Studio)
 
 ### DOWNLOAD
 
-1. Navigate to https://github.com/MenuFi/MenuFiWebPortal
+1. Navigate to https://github.com/MenuFi/MenuFiAndroidApp
 2. Click `Clone or download`
 3. Click `Download ZIP`
 
 ### DEPENDENCIES
 
-All dependenices are contained within the local `package.json` file.
-
-After downloading the project (see above step), resolve dependencies by running the following command in the base path of the project:
-
-`npm install`
+1. Android SDK 16 or newer
 
 ### BUILD
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+#### BUILD DEBUG
+Run `gradlew assembleDebug` to build the project and create and apk.
 
-### INSTALLATION
-
-Copy the files in the `dist/` directory to your desired remote location (wherever the site will be hosted).
+#### BUILD PRODUCTION
+follow the instructions on 'https://developer.android.com/studio/publish/app-signing.html' to build a production APK
 
 ### RUNNING APPLICATION
 
-#### LOCALLY
+#### ON DEVICE
+run 'adb -d install path/to/your_app.apk' to install the app to your device
 
-##### Deploying and testing
-
-Run `ng serve` for a dev deployment. This will use locally mocked services instead of a backend.
-
-Run `ng serve --env=local` for a local deployment. This will use the local backend at http://localhost:8080
-
-Run `ng serve --prod` for a prod deployment. This will use the remote backend at http://menufi-192821.appspot.com/
-
-The three different environments are outlined in the environments folder.
-
-##### Testing build artifacts
-
-1. Open your browser of choice.
-2. Go to `file:///path/to/project/dist/index.html`
-
-#### REMOTE
-
-Simply navigate to your hosted website domain.
+#### ON EMULATOR
+run 'emulator -avd avd_name' to start your emulator
+run' adb install path/to/your_app.apk' to install to your emulator
 
 ### TROUBLESHOOTING
 
-**Resolving Dependencies:** Dependencies of dependencies will need to be first resolved. Read the output of running `npm install`, and proceed to install dependencies of the dependencies using `npm install <dependency>`.
-
-**Registering New Dependencies:** Make sure to use one of the two following flags to register it in the `packages.json` file:
-
-* `npm install --save <dependency>` for a runtime dependency
-* `npm install --save-dev <dependency>` for a dev compilation dependency
-
-See http://imcodebased.com/npm-save-or-save-dev-which-one-to-use/ for more advice on which to use.
+1. If there are compile errors make sure you have the correct Android SDK installed.
