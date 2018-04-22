@@ -137,7 +137,7 @@ public class MenuItemFragment extends Fragment {
     }
 
     private void filterPreferences(boolean checked) {
-        for (int i = 0; i < filteredMenuItemsList.size(); i++) {
+        for (int i = 0; i < itemListView.getChildCount(); i++) {
             if (checked) {
                 List<DietaryPreference> itemPrefs = filteredMenuItemsList.get(i).getDietaryPreferences(DietaryPreference.Type.PREFERENCE);
                 for (DietaryPreference pref : itemPrefs) {
@@ -182,7 +182,7 @@ public class MenuItemFragment extends Fragment {
 
         @Override
         public void notifyDataSetChanged() {
-            Log.e("TEST", "Notifyiung data set changed");
+            Log.e("TEST", "Notifying data set changed");
             filterAllergies(((MainActivity) getActivity()).allergySwitch.isChecked());
             super.notifyDataSetChanged();
         }
