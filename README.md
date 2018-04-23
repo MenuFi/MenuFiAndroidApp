@@ -9,9 +9,9 @@ This is part of a larger MenuFi solution that includes the following projects:
 ### NEW FEATURES
 
 * Added ability to view restaurants and menu items
-* Added ability to update alleriges and preferences
+* Added ability to update allergies and preferences
 * Added ability to filter by allergies and preferences
-* Added ability to view detailed enteries about menu items
+* Added ability to view detailed entries about menu items
 * Added ability to rate and view ratings of menu items
 * Added registering user clicks
 
@@ -55,11 +55,11 @@ You must have the following installed before preceding:
 ### RUNNING APPLICATION
 
 #### ON DEVICE
-* run 'adb -d install path/to/your_app.apk' to install the app to your device
+* run `adb -d install path/to/your_app.apk` to install the app to your device
 
 #### ON EMULATOR
-1. run 'emulator -avd avd_name' to start your emulator
-2. run 'adb install path/to/your_app.apk' to install to your emulator
+1. run `emulator -avd avd_name` to start your emulator
+2. run `adb install path/to/your_app.apk` to install to your emulator
 
 ### TROUBLESHOOTING
 
