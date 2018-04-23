@@ -199,7 +199,11 @@ public class MenuItemFragment extends Fragment {
             getRetrieveImage(itemImageView).execute(thisItem.getPictureUri());
 
             TextView nameText = itemView.findViewById(R.id.itemName);
-            nameText.setText(thisItem.getName());
+            String name = thisItem.getName();
+            if (thisItem.getItemPopularity() <= MenuItem.POPULAR_ITEM_THRESHOLD) {
+                name+="\u2b50";
+            }
+            nameText.setText(name);
 
             TextView descText = itemView.findViewById(R.id.itemDescription);
             descText.setText(thisItem.getDescription());
@@ -219,10 +223,6 @@ public class MenuItemFragment extends Fragment {
                 stars = String.format("%0" + 5 + "d", 0).replace("0", "\u2605");
             }
             ratingsText.setText(stars);
-
-            if (thisItem.getItemPopularity() > MenuItem.POPULAR_ITEM_THRESHOLD) {
-                itemView.findViewById(R.id.popularMenuItemStar).setVisibility(View.INVISIBLE);
-            }
 
             return itemView;
         }
