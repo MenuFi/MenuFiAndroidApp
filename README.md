@@ -1,5 +1,9 @@
 # MenuFiAndroidApp
 
+This is part of a larger MenuFi solution that includes the following projects:
+* https://github.com/MenuFi/MenuFiBackend
+* https://github.com/MenuFi/MenuFiWebPortal
+
 ## Release Notes version 1.0
 
 ### NEW FEATURES
@@ -43,7 +47,7 @@ You must have the following installed before preceding:
 ### BUILD
 
 #### BUILD DEBUG
-* Run `gradlew assembleDebug` to build the project and create and apk.
+* Run `gradlew assembleDebug` to build the project and create an APK.
 
 #### BUILD PRODUCTION
 * follow the instructions on 'https://developer.android.com/studio/publish/app-signing.html' to build a production APK
