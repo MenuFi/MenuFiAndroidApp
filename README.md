@@ -50,16 +50,16 @@ You must have the following installed before preceding:
 * Run `gradlew assembleDebug` to build the project and create an APK.
 
 #### BUILD PRODUCTION
-* follow the instructions on 'https://developer.android.com/studio/publish/app-signing.html' to build a production APK
+* Follow these instructions to build a production APK: https://developer.android.com/studio/publish/app-signing.html
 
 ### RUNNING APPLICATION
 
 #### ON DEVICE
-* run `adb -d install path/to/your_app.apk` to install the app to your device
+* Run `adb -d install path/to/your_app.apk` to install the app to your device
 
 #### ON EMULATOR
-1. run `emulator -avd avd_name` to start your emulator
-2. run `adb install path/to/your_app.apk` to install to your emulator
+1. Run `emulator -avd avd_name` to start your emulator
+2. Run `adb install path/to/your_app.apk` to install to your emulator
 
 ### TROUBLESHOOTING
 
